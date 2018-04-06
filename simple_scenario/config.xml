@@ -3,5 +3,6 @@
     trip_file="../simple_scenario/trips2.xml" 
     map_file="../simple_scenario/fiandeiras.xml" 
     output_file="../simple_scenario/events.xml" 
+    traffic_lights_file="../simple_scenario/traffic-lights.xml"
     simulation_time="86400"/>
 </scsimulator_config>

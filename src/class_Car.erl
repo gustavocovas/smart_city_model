@@ -157,8 +157,8 @@ get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->
 
 	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + Time );
 
-get_next_vertex( State , [ Current | Path ] , _Mode ) ->
-	Vertices = list_to_atom( lists:concat( [ Current , lists:nth( 1 , Path ) ] )),
+get_next_vertex( State , [ CurrentVertex | [ NextVertex | Path ] ] , _Mode ) ->
+	Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
 	
 	DecrementVertex = getAttribute( State , last_vertex_pid ),
 	case DecrementVertex of
@@ -168,14 +168,20 @@ get_next_vertex( State , [ Current | Path ] , _Mode ) ->
 			ets:update_counter( list_streets, DecrementVertex , { 6 , -1 })
 	end,	
 
-	ets:update_counter( list_streets , Vertices , { 6 , 1 }),
-	Data = lists:nth( 1, ets:lookup( list_streets , Vertices ) ),
+	ets:update_counter( list_streets , Edge , { 6 , 1 }),
+	Data = lists:nth( 1, ets:lookup( list_streets , Edge ) ),
 
 	{ Id , Time , Distance } = traffic_models:get_speed_car( Data ),
 
 	TotalLength = getAttribute( State , distance ) + Distance,
-	FinalState = setAttributes( State , [{distance , TotalLength} , {car_position , Id} , {last_vertex_pid , Vertices} , {path , Path}] ), 
+	FinalState = setAttributes( State , [{distance , TotalLength} , {car_position , Id} , {last_vertex_pid , Edge} , {path , Path}] ), 
 
+	TrafficLights = ets:lookup_element(options, traffic_lights_pid, 2),
+	class_Actor:send_actor_message(TrafficLights, {getTrafficLightState, {NextVertex}}, State),
+
+	% TODO: Remove this debug line
+	io:format('~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n', 
+		[CurrentVertex, NextVertex, Distance, Time, TotalLength / Time, class_Actor:get_current_tick_offset( FinalState ) + Time]),
 %	print_movement( FinalState ),
 
 	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + Time ).

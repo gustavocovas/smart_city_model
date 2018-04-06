@@ -148,6 +148,11 @@ run() ->
 	io:format("read parks"),
 	ParkSpots = park_parser:read_csv( element( 7 , Config ) ), 
 
+  	% TODO: Parse traffic lights from file
+	_TrafficLights = [{node_id, "302806098"}],
+	class_Actor:create_initial_actor( class_TrafficLights,
+		[ "traffic-lighs", ["302806098" ]] ),
+
 	ListEdges = create_street_list( CityGraph ),
 
 	{ _ , Pwd } = file:get_cwd(),
