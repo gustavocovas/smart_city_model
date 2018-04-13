@@ -17,7 +17,7 @@
 		 construct/4, destruct/1 ).
 
 % Method declarations.
--define( wooper_method_export, actSpontaneous/1, onFirstDiasca/2, getTrafficLightState/3 ).
+-define( wooper_method_export, actSpontaneous/1, onFirstDiasca/2, queryLightState/3 ).
 
 % Allows to define WOOPER base variables and methods for that class:
 -include("smart_city_test_types.hrl").
@@ -69,6 +69,17 @@ onFirstDiasca( State, _SendingActorPid ) ->
 	?wooper_return_state_only( ScheduledState ).
 
 
--spec getTrafficLightState( wooper:state(), parameter(), pid() ) -> class_Actor:actor_oneway_return().
-getTrafficLightState( State , _NodeId , PersonPID ) ->
-    class_Actor:send_actor_message( PersonPID, { state, { red , 30 } }, State ).
+-spec queryLightState( wooper:state(), parameter(), pid() ) -> class_Actor:actor_oneway_return().
+queryLightState( State , _NodeId , PersonPID ) ->
+	CurrentTickOffset = class_Actor:get_current_tick_offset( State ), 
+
+	ColorChangePeriod = 30,
+	TickInPeriod = CurrentTickOffset rem (ColorChangePeriod * 2),
+	TicksUntilNextStateTransition = ColorChangePeriod - (TickInPeriod rem ColorChangePeriod),
+
+	CurrentLightState = if 
+		TickInPeriod > ColorChangePeriod -> {red, TicksUntilNextStateTransition};
+		true -> {green, TicksUntilNextStateTransition}
+	end,
+
+    class_Actor:send_actor_message( PersonPID, { on_traffic_light_state_obtained, CurrentLightState }, State ).

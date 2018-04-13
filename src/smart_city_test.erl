@@ -151,7 +151,7 @@ run() ->
   	% TODO: Parse traffic lights from file
 	_TrafficLights = [{node_id, "302806098"}],
 	class_Actor:create_initial_actor( class_TrafficLights,
-		[ "traffic-lighs", ["302806098" ]] ),
+		[ "traffic-lighs", ["302806098"]] ),
 
 	ListEdges = create_street_list( CityGraph ),
 

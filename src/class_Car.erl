@@ -17,7 +17,7 @@
 		 construct/8, destruct/1 ).
 
 % Method declarations.
--define( wooper_method_export, actSpontaneous/1, onFirstDiasca/2, get_parking_spot/3 , set_new_path/3 ).
+-define( wooper_method_export, actSpontaneous/1, onFirstDiasca/2, get_parking_spot/3 , set_new_path/3, on_traffic_light_state_obtained/3 ).
 
 % Allows to define WOOPER base variables and methods for that class:
 -include("smart_city_test_types.hrl").
@@ -157,7 +157,14 @@ get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->
 
 	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + Time );
 
-get_next_vertex( State , [ CurrentVertex | [ NextVertex | Path ] ] , _Mode ) ->
+get_next_vertex( State, [ CurrentVertex | _ ], _Mode) -> 
+	TrafficLights = ets:lookup_element(options, traffic_lights_pid, 2),
+	class_Actor:send_actor_message(TrafficLights, {queryLightState, {CurrentVertex}}, State).
+
+-spec on_traffic_light_state_obtained(wooper:state(), tuple(), pid()) -> oneway_return().
+on_traffic_light_state_obtained( State , {CurrentColor, TicksUntilNextColor}, _TrafficLightPid ) -> 
+
+	[ CurrentVertex | [ NextVertex | Path ] ] = getAttribute( State , path ),
 	Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
 	
 	DecrementVertex = getAttribute( State , last_vertex_pid ),
@@ -176,15 +183,17 @@ get_next_vertex( State , [ CurrentVertex | [ NextVertex | Path ] ] , _Mode ) ->
 	TotalLength = getAttribute( State , distance ) + Distance,
 	FinalState = setAttributes( State , [{distance , TotalLength} , {car_position , Id} , {last_vertex_pid , Edge} , {path , Path}] ), 
 
-	TrafficLights = ets:lookup_element(options, traffic_lights_pid, 2),
-	class_Actor:send_actor_message(TrafficLights, {getTrafficLightState, {NextVertex}}, State),
+	TimeAfterTrafficLight = case CurrentColor of
+		red -> io:format("Traffic light is red, will be green in ~p\n", [TicksUntilNextColor]), Time + TicksUntilNextColor;
+		green -> io:format("Traffic light is green\n"), Time
+	end,
 
 	% TODO: Remove this debug line
 	io:format('~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n', 
-		[CurrentVertex, NextVertex, Distance, Time, TotalLength / Time, class_Actor:get_current_tick_offset( FinalState ) + Time]),
-%	print_movement( FinalState ),
+		[CurrentVertex, NextVertex, Distance, TimeAfterTrafficLight, TotalLength / TimeAfterTrafficLight, class_Actor:get_current_tick_offset( FinalState ) + TimeAfterTrafficLight]),
 
-	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + Time ).
+	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + TimeAfterTrafficLight ).
+
 
 get_parking_spot( State , IdNode , _ParkingPID ) ->
 	Node = element( 1 , IdNode ),
@@ -210,27 +219,3 @@ onFirstDiasca( State, _SendingActorPid ) ->
     	FirstActionTime = class_Actor:get_current_tick_offset( State ) + StartTime,   	
 	NewState = setAttribute( State , start_time , FirstActionTime ),
 	executeOneway( NewState , addSpontaneousTick , FirstActionTime ).
-
-%print_movement( State ) ->
-
-%	LastPosition = getAttribute( State , car_position ),
-
-%	{ Trips , CurrentTickOffset , CarId , Type , NewPosition }
- %            = { getAttribute( LengthState , trips ), class_Actor:get_current_tick_offset( State ) , 
-  %               getAttribute( State , car_name ) , getAttribute( State , type ) , getAttribute( LengthState , car_position ) },
-%	CurrentTrip =  lists:nth( 1 , Trips ),
-
-%	FinalState = case LastPosition == -1 of
-
-%		false ->
-			
-%			print:write_movement_car_message( LengthState , CarId , LastPosition , Type , ets:lookup_element(options, log_pid, 2 ) , CurrentTickOffset , NewPosition , csv  );
- 
-
-%		true -> 
-
-%			LinkOrigin = element( 3 , CurrentTrip ), 
-
-%			print:write_initial_message( LengthState , ets:lookup_element(options, log_pid, 2 ) , CarId , Type , CurrentTickOffset , LinkOrigin , LastPosition , csv )
-	   
-%	end.
