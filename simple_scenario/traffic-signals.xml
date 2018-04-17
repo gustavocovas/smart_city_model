@@ -1,0 +1,19 @@
+<traffic-signals>
+    <signal>
+        <nodes>
+            <node id="300058941"/>
+        </nodes>
+        <groups>
+            <group>
+                <destinations>
+                    <node id="1389167570"/>
+                </destinations>
+            </group>
+            <group>
+                <destinations>
+                    <node id="302806057"/>
+                </destinations>
+            </group>
+        </groups>
+    </signal>
+</traffic-signals>

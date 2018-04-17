@@ -83,7 +83,7 @@ verify_next_action( State , _Trips , _Path ) ->
 	Mode = getAttribute( State , mode ), 
 
 	CurrentTickOffset = class_Actor:get_current_tick_offset( State ), 
-	print:write_final_message( Type , TotalLength , StartTime , CarId , CurrentTickOffset , LastPosition , Mode , csv ),
+	print:write_final_message( Type , TotalLength , StartTime , CarId , CurrentTickOffset , LastPosition , Mode , xml ),
 	PathFinish = setAttribute( State , path , finish ),
 
 	executeOneway( PathFinish , scheduleNextSpontaneousTick ).
@@ -158,12 +158,45 @@ get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->
 	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + Time );
 
 get_next_vertex( State, [ CurrentVertex | _ ], _Mode) -> 
-	TrafficLights = ets:lookup_element(options, traffic_lights_pid, 2),
-	class_Actor:send_actor_message(TrafficLights, {queryLightState, {CurrentVertex}}, State).
+	io:format("Car at vertex ~p, will lookup traffic signals...\n", [CurrentVertex]),
+
+	try 
+		io:format("[car] ets contents: ~p\n", [ets:tab2list(traffic_signals)]),
+		TrafficSignalsPid = ets:lookup_element(traffic_signals, CurrentVertex, 1),
+		io:format("There is a signal, pid is ~p.\n", [TrafficSignalsPid]),
+		class_Actor:send_actor_message(TrafficSignalsPid, {queryLightState, {CurrentVertex}}, State)
+	catch 
+		error:badarg -> 
+			io:format("No traffic signals at current vertex. \n"),
+			continue_movement(State)
+	end.
+
+% TODO: Refactor, unify with on_traffic_light_state_obtained()
+continue_movement( State ) ->
+	[ CurrentVertex | [ NextVertex | Path ] ] = getAttribute( State , path ),
+	Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
+	
+	DecrementVertex = getAttribute( State , last_vertex_pid ),
+	case DecrementVertex of
+		ok -> ok;
+		_ -> ets:update_counter( list_streets, DecrementVertex , { 6 , -1 })
+	end,	
+
+	ets:update_counter( list_streets , Edge , { 6 , 1 }),
+	Data = lists:nth( 1, ets:lookup( list_streets , Edge ) ),
+
+	{ Id , Time , Distance } = traffic_models:get_speed_car( Data ),
+
+	TotalLength = getAttribute( State , distance ) + Distance,
+	FinalState = setAttributes( State , [{distance , TotalLength} , {car_position , Id} , {last_vertex_pid , Edge} , {path , Path}] ), 
+
+	io:format('~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n', 
+		[CurrentVertex, NextVertex, Distance, Time, TotalLength / Time, class_Actor:get_current_tick_offset( FinalState ) + Time]),
+
+	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + Time ).
 
 -spec on_traffic_light_state_obtained(wooper:state(), tuple(), pid()) -> oneway_return().
 on_traffic_light_state_obtained( State , {CurrentColor, TicksUntilNextColor}, _TrafficLightPid ) -> 
-
 	[ CurrentVertex | [ NextVertex | Path ] ] = getAttribute( State , path ),
 	Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
 	
@@ -193,7 +226,7 @@ on_traffic_light_state_obtained( State , {CurrentColor, TicksUntilNextColor}, _T
 		[CurrentVertex, NextVertex, Distance, TimeAfterTrafficLight, TotalLength / TimeAfterTrafficLight, class_Actor:get_current_tick_offset( FinalState ) + TimeAfterTrafficLight]),
 
 	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + TimeAfterTrafficLight ).
-
+	
 
 get_parking_spot( State , IdNode , _ParkingPID ) ->
 	Node = element( 1 , IdNode ),

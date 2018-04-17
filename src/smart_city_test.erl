@@ -49,6 +49,16 @@ create_buses( [ Bus | Buses ] , CityGraph  ) ->
 
 	create_buses( Buses , CityGraph  ).
 
+create_traffic_signals([]) -> ok;
+create_traffic_signals([Signal | Signals]) ->
+	% TODO: Multiple nodes per signal
+	{signal, [{nodes, [{node, [{id, Id}], []}]}, _]} = Signal,
+	% TODO: Rename to TrafficSignals
+	class_Actor:create_initial_actor(class_TrafficLights, 
+		[string:concat("traffic-signals-at-node-", Id), list_to_integer(Id)]),
+
+	create_traffic_signals(Signals).
+
 calculate_bus_path( [ Stop | List ] , CityGraph  , Path ) ->
 	case length( List ) >= 1 of 
 		true ->
@@ -148,10 +158,7 @@ run() ->
 	io:format("read parks"),
 	ParkSpots = park_parser:read_csv( element( 7 , Config ) ), 
 
-  	% TODO: Parse traffic lights from file
-	_TrafficLights = [{node_id, "302806098"}],
-	class_Actor:create_initial_actor( class_TrafficLights,
-		[ "traffic-lighs", ["302806098"]] ),
+	TrafficSignals = traffic_signals_parser:show( element( 8, Config ) ),
 
 	ListEdges = create_street_list( CityGraph ),
 
@@ -191,6 +198,9 @@ run() ->
 	collectResults( Names ),
 
 	create_buses( ListBuses , CityGraph  ),
+
+	% TODO: Implement each signal as an actor
+	create_traffic_signals(TrafficSignals),
 
 	SimulationDuration = element( 1 , string:to_integer(element( 2 , Config ) ) ),
 
