@@ -160,15 +160,18 @@ get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->
 get_next_vertex( State, [ CurrentVertex | _ ], _Mode) -> 
 	io:format("Car at vertex ~p, will lookup traffic signals...\n", [CurrentVertex]),
 
-	try 
-		io:format("[car] ets contents: ~p\n", [ets:tab2list(traffic_signals)]),
-		TrafficSignalsPid = ets:lookup_element(traffic_signals, CurrentVertex, 1),
-		io:format("There is a signal, pid is ~p.\n", [TrafficSignalsPid]),
-		class_Actor:send_actor_message(TrafficSignalsPid, {queryLightState, {CurrentVertex}}, State)
-	catch 
-		error:badarg -> 
+	% Current vertex is an atom here, but at the ets it is a string. Must convert:
+	CurrentVertexStr = lists:flatten(io_lib:format("~s", [CurrentVertex])),
+	Matches = ets:lookup(traffic_signals, CurrentVertexStr),
+
+	case length(Matches) of
+		0 -> 
 			io:format("No traffic signals at current vertex. \n"),
-			continue_movement(State)
+			continue_movement(State);
+		_ -> 	
+			{_, TrafficSignalsPid} = lists:nth(1, Matches),
+			io:format("There is a signal, pid is ~p.\n", [TrafficSignalsPid]),
+			class_Actor:send_actor_message(TrafficSignalsPid, {queryLightState, {CurrentVertex}}, State)
 	end.
 
 % TODO: Refactor, unify with on_traffic_light_state_obtained()

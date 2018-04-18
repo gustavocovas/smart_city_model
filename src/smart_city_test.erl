@@ -55,7 +55,7 @@ create_traffic_signals([Signal | Signals]) ->
 	{signal, [{nodes, [{node, [{id, Id}], []}]}, _]} = Signal,
 	% TODO: Rename to TrafficSignals
 	class_Actor:create_initial_actor(class_TrafficLights, 
-		[string:concat("traffic-signals-at-node-", Id), list_to_integer(Id)]),
+		[string:concat("traffic-signals-at-node-", Id), Id]),
 
 	create_traffic_signals(Signals).
 

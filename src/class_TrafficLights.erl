@@ -30,14 +30,12 @@
 				class_Actor:name() , parameter() ) -> wooper:state().
 construct( State, ?wooper_construct_parameters ) ->
 
-    case ets:info(traffic_signals) of
+  case ets:info(traffic_signals) of
 		undefined -> ets:new(traffic_signals, [public, set, named_table]);
-        _ -> ok
+      _ -> ok
 	end,
 	
-	io:format("inserting traffic_signal at node ~p, pid ~p", [NodeId, self()]),
 	ets:insert(traffic_signals, {NodeId, self()}),
-	io:format("ets contents: ~p\n", [ets:tab2list(traffic_signals)]),
 
     ActorState = class_Actor:construct( State, ActorSettings , ActorName ),
 
