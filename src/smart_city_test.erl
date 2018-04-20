@@ -53,8 +53,7 @@ create_traffic_signals([]) -> ok;
 create_traffic_signals([Signal | Signals]) ->
 	% TODO: Multiple nodes per signal
 	{signal, [{nodes, [{node, [{id, Id}], []}]}, _]} = Signal,
-	% TODO: Rename to TrafficSignals
-	class_Actor:create_initial_actor(class_TrafficLights, 
+	class_Actor:create_initial_actor(class_TrafficSignals, 
 		[string:concat("traffic-signals-at-node-", Id), Id]),
 
 	create_traffic_signals(Signals).

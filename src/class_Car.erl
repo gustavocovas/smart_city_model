@@ -17,7 +17,7 @@
 		 construct/8, destruct/1 ).
 
 % Method declarations.
--define( wooper_method_export, actSpontaneous/1, onFirstDiasca/2, get_parking_spot/3 , set_new_path/3, on_traffic_light_state_obtained/3 ).
+-define( wooper_method_export, actSpontaneous/1, onFirstDiasca/2, get_parking_spot/3 , set_new_path/3, receive_signal_state/3 ).
 
 % Allows to define WOOPER base variables and methods for that class:
 -include("smart_city_test_types.hrl").
@@ -171,7 +171,7 @@ get_next_vertex( State, [ CurrentVertex | _ ], _Mode) ->
 		_ -> 	
 			{_, TrafficSignalsPid} = lists:nth(1, Matches),
 			io:format("Traffic signal at vertex ~p has pid ~p.\n", [CurrentVertex, TrafficSignalsPid]),
-			class_Actor:send_actor_message(TrafficSignalsPid, {queryLightState, {CurrentVertex}}, State)
+			class_Actor:send_actor_message(TrafficSignalsPid, {querySignalState, {CurrentVertex}}, State)
 	end.
 
 move_to_next_vertex( State ) ->
@@ -197,15 +197,15 @@ move_to_next_vertex( State ) ->
 
 	executeOneway( StateAfterMovement , addSpontaneousTick , class_Actor:get_current_tick_offset( StateAfterMovement ) + Time ).
 
--spec on_traffic_light_state_obtained(wooper:state(), tuple(), pid()) -> oneway_return().
-on_traffic_light_state_obtained( State , {Color, TicksUntilNextColor}, _TrafficLightPid ) -> 
+-spec receive_signal_state(wooper:state(), tuple(), pid()) -> oneway_return().
+receive_signal_state( State , {Color, TicksUntilNextColor}, _TrafficLightPid ) -> 
 	case Color of
 		red -> 
-			io:format("Traffic light is red, will be green in ~p\n", [TicksUntilNextColor]),
+			io:format("Traffic signal is red, will be green in ~p\n", [TicksUntilNextColor]),
 			% Act spontaneously when the traffic light is green again...
 			executeOneway( State , addSpontaneousTick , class_Actor:get_current_tick_offset( State ) + TicksUntilNextColor );
 		green -> 
-			io:format("Traffic light is green, continuing movement...\n"),
+			io:format("Traffic signal is green, continuing movement...\n"),
 			move_to_next_vertex(State)
 	end.
 

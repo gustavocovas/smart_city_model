@@ -1,4 +1,4 @@
--module(class_TrafficLights).
+-module(class_TrafficSignals).
 
 % Determines what are the mother classes of this class (if any):
 -define( wooper_superclasses, [ class_Actor ] ).
@@ -17,7 +17,7 @@
 		 construct/4, destruct/1 ).
 
 % Method declarations.
--define( wooper_method_export, actSpontaneous/1, onFirstDiasca/2, queryLightState/3 ).
+-define( wooper_method_export, actSpontaneous/1, onFirstDiasca/2, querySignalState/3 ).
 
 % Allows to define WOOPER base variables and methods for that class:
 -include("smart_city_test_types.hrl").
@@ -57,8 +57,8 @@ onFirstDiasca( State, _SendingActorPid ) ->
 	?wooper_return_state_only( ScheduledState ).
 
 
--spec queryLightState( wooper:state(), parameter(), pid() ) -> class_Actor:actor_oneway_return().
-queryLightState( State , _NodeId , PersonPID ) ->
+-spec querySignalState( wooper:state(), parameter(), pid() ) -> class_Actor:actor_oneway_return().
+querySignalState( State , _NodeId , PersonPID ) ->
 	CycleTime = 60,	
 	CurrentTick = class_Actor:get_current_tick_offset( State ), 
 
@@ -70,4 +70,4 @@ queryLightState( State , _NodeId , PersonPID ) ->
 		true -> {green, TicksUntilNextCycle}
 	end,
 
-  class_Actor:send_actor_message( PersonPID, { on_traffic_light_state_obtained, CurrentLightState }, State ).
+  class_Actor:send_actor_message( PersonPID, { receive_signal_state, CurrentLightState }, State ).
