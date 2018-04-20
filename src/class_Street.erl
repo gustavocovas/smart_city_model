@@ -48,6 +48,9 @@ construct( State, ?wooper_construct_parameters ) ->
 
 	create_option_table( LogName , Paths ),
 
+	InitFile = ets:lookup_element(options, log_file, 2 ),
+	file_utils:write( InitFile, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<events version=\"1.0\">\n" ),
+
 	class_Actor:construct( State, ActorSettings, StreetName ).
 
 create_option_table( LogName , Paths ) ->
@@ -112,8 +115,9 @@ destruct( State ) ->
 	%ok = amqp_channel:close(Channel),
 	%ok = amqp_connection:close(Connection),
 
-%	file_utils:write( InitFile, "</events>" ),
-	file_utils:close( ets:lookup_element(options, log_file, 2 ) ),
+	InitFile = ets:lookup_element(options, log_file, 2 ),
+	file_utils:write( InitFile, "</events>" ),
+	file_utils:close( InitFile ),
 
 	State.
 

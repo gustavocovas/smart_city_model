@@ -153,7 +153,7 @@ get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->
 	TotalLength = getAttribute( State , distance ) + Distance,
 	FinalState = setAttributes( State , [ { distance , TotalLength } , { car_position , Id } , { path , Path } ] ), 
 
-%	print_movement( State ),
+	%	print_movement( State ),
 
 	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + Time );
 
@@ -195,6 +195,7 @@ move_to_next_vertex( State ) ->
 	io:format('Tick: ~p; ~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n', 
 		[class_Actor:get_current_tick_offset( State ), CurrentVertex, NextVertex, Distance, Time, TotalLength / Time, class_Actor:get_current_tick_offset( StateAfterMovement ) + Time]),
 
+	print_movement(State, StateAfterMovement),
 	executeOneway( StateAfterMovement , addSpontaneousTick , class_Actor:get_current_tick_offset( StateAfterMovement ) + Time ).
 
 -spec receive_signal_state(wooper:state(), tuple(), pid()) -> oneway_return().
@@ -233,3 +234,19 @@ onFirstDiasca( State, _SendingActorPid ) ->
     	FirstActionTime = class_Actor:get_current_tick_offset( State ) + StartTime,   	
 	NewState = setAttribute( State , start_time , FirstActionTime ),
 	executeOneway( NewState , addSpontaneousTick , FirstActionTime ).
+
+print_movement( PreviousState, NextState ) ->
+	CarId = getAttribute( PreviousState, car_name),
+	LastPosition = getAttribute( PreviousState , car_position ),
+	Type = getAttribute( PreviousState , type ),
+	CurrentTickOffset = class_Actor:get_current_tick_offset( NextState ),
+	NewPosition = getAttribute( NextState, car_position),
+
+	case LastPosition == -1 of
+		false ->
+			print:write_movement_car_message( CarId, LastPosition, Type, CurrentTickOffset, NewPosition, xml );
+		true -> 
+			CurrentTrip = lists:nth( 1 , getAttribute( PreviousState , trips ) ),
+			LinkOrigin = element( 3 , CurrentTrip ), 
+			print:write_initial_message( CarId, Type, CurrentTickOffset, LinkOrigin, NewPosition, xml )
+	end.
