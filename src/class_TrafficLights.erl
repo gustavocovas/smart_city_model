@@ -25,41 +25,29 @@
 % Allows to define WOOPER base variables and methods for that class:
 -include("wooper.hrl").
 
-%
--spec construct( wooper:state(), class_Actor:actor_settings(),
-				class_Actor:name() , parameter() ) -> wooper:state().
+-spec construct( wooper:state(), class_Actor:actor_settings(), class_Actor:name() , parameter() ) 
+	-> wooper:state().
 construct( State, ?wooper_construct_parameters ) ->
-
   case ets:info(traffic_signals) of
 		undefined -> ets:new(traffic_signals, [public, set, named_table]);
-      _ -> ok
+    _ -> ok
 	end,
 	
 	ets:insert(traffic_signals, {NodeId, self()}),
-
-    ActorState = class_Actor:construct( State, ActorSettings , ActorName ),
-
-    setAttributes(ActorState, [{node_id, NodeId}] ).
+	ActorState = class_Actor:construct( State, ActorSettings , ActorName ),
+	setAttributes(ActorState, [{node_id, NodeId}] ).
 
 % Overridden destructor.
 %
 -spec destruct( wooper:state() ) -> wooper:state().
 destruct( State ) -> State.
 
-% The City is a passive actor. Never start spontanely an action
-%
-% (oneway)
-%
 -spec actSpontaneous( wooper:state() ) -> oneway_return().
 actSpontaneous( State ) ->
-    CurrentTick = class_Actor:get_current_tick_offset( State ),
-    executeOneway( State , addSpontaneousTick, CurrentTick + 600 ).
+  CurrentTick = class_Actor:get_current_tick_offset( State ),
+  executeOneway( State , addSpontaneousTick, CurrentTick + 600 ).
 
 
-% Simply schedules this just created actor at the next tick (diasca 0).
-%
-% (actor oneway)
-%
 -spec onFirstDiasca( wooper:state(), pid() ) -> oneway_return().
 onFirstDiasca( State, _SendingActorPid ) ->
 
@@ -71,15 +59,15 @@ onFirstDiasca( State, _SendingActorPid ) ->
 
 -spec queryLightState( wooper:state(), parameter(), pid() ) -> class_Actor:actor_oneway_return().
 queryLightState( State , _NodeId , PersonPID ) ->
-	CurrentTickOffset = class_Actor:get_current_tick_offset( State ), 
+	CycleTime = 60,	
+	CurrentTick = class_Actor:get_current_tick_offset( State ), 
 
-	ColorChangePeriod = 30,
-	TickInPeriod = CurrentTickOffset rem (ColorChangePeriod * 2),
-	TicksUntilNextStateTransition = ColorChangePeriod - (TickInPeriod rem ColorChangePeriod),
+	TickInCycle = CurrentTick rem (CycleTime),
+	TicksUntilNextCycle = CycleTime - TickInCycle,
 
 	CurrentLightState = if 
-		TickInPeriod > ColorChangePeriod -> {red, TicksUntilNextStateTransition};
-		true -> {green, TicksUntilNextStateTransition}
+		TickInCycle > (CycleTime / 2) -> {red, TicksUntilNextCycle};
+		true -> {green, TicksUntilNextCycle}
 	end,
 
-    class_Actor:send_actor_message( PersonPID, { on_traffic_light_state_obtained, CurrentLightState }, State ).
+  class_Actor:send_actor_message( PersonPID, { on_traffic_light_state_obtained, CurrentLightState }, State ).
