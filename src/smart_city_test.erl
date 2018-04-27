@@ -52,9 +52,9 @@ create_buses( [ Bus | Buses ] , CityGraph  ) ->
 create_traffic_signals([]) -> ok;
 create_traffic_signals([Signal | Signals]) ->
 	% TODO: Multiple nodes per signal
-	{signal, [{nodes, [{node, [{id, Id}], []}]}, _]} = Signal,
+	{signal, [{nodes, [{node, [{id, NodeId}], []}]}, _]} = Signal,
 	class_Actor:create_initial_actor(class_TrafficSignals, 
-		[string:concat("traffic-signals-at-node-", Id), Id]),
+		[string:concat("traffic-signals-at-node-", NodeId), Signal]),
 
 	create_traffic_signals(Signals).
 

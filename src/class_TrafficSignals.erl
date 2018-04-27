@@ -4,7 +4,7 @@
 -define( wooper_superclasses, [ class_Actor ] ).
 
 % parameters taken by the constructor ('construct').
--define( wooper_construct_parameters, ActorSettings, ActorName, NodeId ).
+-define( wooper_construct_parameters, ActorSettings, ActorName, Signal ).
 
 % Declaring all variations of WOOPER-defined standard life-cycle operations:
 % (template pasted, just two replacements performed to update arities)
@@ -32,10 +32,29 @@ construct( State, ?wooper_construct_parameters ) ->
 		undefined -> ets:new(traffic_signals, [public, set, named_table]);
     _ -> ok
 	end,
+
+	{signal, [{nodes, [{node, [{id, NodeId}], []}]}, {groups, Groups}]} = Signal,
+
+	{GroupsByDestination, _} = lists:foldl(
+		fun({group, Destinations}, {GroupsByDestination, CurrentGroupId}) -> 
+			{
+				lists:foldl(
+					fun({destination, [{id, DestinationId}], _}, GroupsByDestinationAcc) -> 
+						maps:put(DestinationId, CurrentGroupId, GroupsByDestinationAcc) end, 
+					GroupsByDestination, 
+					Destinations),
+				CurrentGroupId + 1
+			}
+		end, 
+		{maps:new(), 0}, 
+		Groups),
+
+	io:format("group by destination (at the end): ~p\n", [GroupsByDestination]),
 	
 	ets:insert(traffic_signals, {NodeId, self()}),
 	ActorState = class_Actor:construct( State, ActorSettings , ActorName ),
-	setAttributes(ActorState, [{node_id, NodeId}] ).
+
+	setAttributes(ActorState, [{signal, Signal}] ).
 
 % Overridden destructor.
 %
