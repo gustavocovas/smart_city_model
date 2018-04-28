@@ -12,4 +12,20 @@
             </phase>
         </phases>
     </signal>
+    <signal>
+        <nodes>
+            <node id="1389167554"/>
+            <node id="1117834820"/>
+        </nodes>
+        <phases>
+            <phase>
+                <destination id="302806067"/>
+                <destination id="265577306"/>
+            </phase>
+            <phase>
+                <destination id="1389167554"/>
+                <destination id="1389167555"/>
+            </phase>
+        </phases>
+    </signal>
 </traffic-signals>

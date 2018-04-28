@@ -28,18 +28,19 @@
 -spec construct( wooper:state(), class_Actor:actor_settings(), class_Actor:name() , parameter() ) 
 	-> wooper:state().
 construct( State, ?wooper_construct_parameters ) ->
-	% TODO: Multiple nodes per signal
-	{signal, [{nodes, [{node, [{id, NodeId}], []}]}, {phases, Phases}]} = Signal,
+	{signal, [{nodes, Nodes}, {phases, Phases}]} = Signal,
 
-  case ets:info(traffic_signals) of
-		undefined -> ets:new(traffic_signals, [public, set, named_table]);
-    _ -> ok
-	end,
+	lists:foreach(fun(Node) -> 
+		{node, [{id, NodeId}], _} = Node,
+		case ets:info(traffic_signals) of
+			undefined -> ets:new(traffic_signals, [public, set, named_table]);
+   	 	_ -> ok
+		end,
 
-	ets:insert( traffic_signals , {NodeId, self()} ),
+		ets:insert( traffic_signals , {NodeId, self()} )
+	end, Nodes),
 
 	PhaseMap = buildPhaseMap(Phases),
-	io:format( "Read phase map: ~p\n" , [PhaseMap] ),
 	
 	ActorState = class_Actor:construct( State , ActorSettings , ActorName ),
 	setAttributes( ActorState , [{signal, Signal}, {phase_map, PhaseMap}] ).
@@ -109,8 +110,8 @@ querySignalState( State , DestinationId , PersonPID ) ->
 
 	TicksUntilNextPhase = ticksUntilNextPhase(CycleTime, PhaseTime, TickInCycle),
 
-	io:format("Current tick: ~p, TickInCycle: ~p, TicksUntilNextCycle: ~p, Phase map: ~p, destination id: ~p, phase id: ~p, GreenPhase: ~p\n", 
-		[CurrentTick, TickInCycle, TicksUntilNextPhase, PhaseMap, DestinationStr, PhaseId, GreenPhase]),
+	% io:format("Current tick: ~p, TickInCycle: ~p, TicksUntilNextCycle: ~p, Phase map: ~p, destination id: ~p, phase id: ~p, GreenPhase: ~p\n", 
+		% [CurrentTick, TickInCycle, TicksUntilNextPhase, PhaseMap, DestinationStr, PhaseId, GreenPhase]),
 
 	CurrentLightState = if 
 		GreenPhase == PhaseId -> {green, TicksUntilNextPhase};
