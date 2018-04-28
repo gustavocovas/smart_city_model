@@ -28,38 +28,44 @@
 -spec construct( wooper:state(), class_Actor:actor_settings(), class_Actor:name() , parameter() ) 
 	-> wooper:state().
 construct( State, ?wooper_construct_parameters ) ->
+	% TODO: Multiple nodes per signal
+	{signal, [{nodes, [{node, [{id, NodeId}], []}]}, {phases, Phases}]} = Signal,
+
   case ets:info(traffic_signals) of
 		undefined -> ets:new(traffic_signals, [public, set, named_table]);
     _ -> ok
 	end,
 
-	{signal, [{nodes, [{node, [{id, NodeId}], []}]}, {groups, Groups}]} = Signal,
+	ets:insert( traffic_signals , {NodeId, self()} ),
 
-	{GroupsByDestination, _} = lists:foldl(
-		fun({group, Destinations}, {GroupsByDestination, CurrentGroupId}) -> 
-			{
-				lists:foldl(
-					fun({destination, [{id, DestinationId}], _}, GroupsByDestinationAcc) -> 
-						maps:put(DestinationId, CurrentGroupId, GroupsByDestinationAcc) end, 
-					GroupsByDestination, 
-					Destinations),
-				CurrentGroupId + 1
-			}
-		end, 
-		{maps:new(), 0}, 
-		Groups),
-
-	io:format("group by destination (at the end): ~p\n", [GroupsByDestination]),
+	PhaseMap = buildPhaseMap(Phases),
+	io:format( "Read phase map: ~p\n" , [PhaseMap] ),
 	
-	ets:insert(traffic_signals, {NodeId, self()}),
-	ActorState = class_Actor:construct( State, ActorSettings , ActorName ),
-
-	setAttributes(ActorState, [{signal, Signal}] ).
+	ActorState = class_Actor:construct( State , ActorSettings , ActorName ),
+	setAttributes( ActorState , [{signal, Signal}, {phase_map, PhaseMap}] ).
 
 % Overridden destructor.
 %
 -spec destruct( wooper:state() ) -> wooper:state().
 destruct( State ) -> State.
+
+
+buildPhaseMap(single_phase, PhaseId, Destinations) ->
+	AccumulateDestination = fun(Destination, AccPhaseMap) ->
+		{destination, [{id, DestinationId}], _} = Destination,
+		maps:put(DestinationId, PhaseId, AccPhaseMap)
+	end,
+	lists:foldl(AccumulateDestination, maps:new(), Destinations).
+
+buildPhaseMap(Phases) ->
+	AccumulatePhase = fun(Phase, {PhaseId, AccPhaseMap}) ->
+		{phase, Destinations} = Phase,
+		SinglePhaseMap = buildPhaseMap(single_phase, PhaseId, Destinations),
+		{PhaseId + 1, maps:merge(AccPhaseMap, SinglePhaseMap)} 
+	end,
+
+	{_, PhaseMap} = lists:foldl(AccumulatePhase, {0, maps:new()}, Phases),
+	PhaseMap.
 
 -spec actSpontaneous( wooper:state() ) -> oneway_return().
 actSpontaneous( State ) ->

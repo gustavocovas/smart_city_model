@@ -3,17 +3,13 @@
         <nodes>
             <node id="300058941"/>
         </nodes>
-        <groups>
-            <group>
-                <destinations>
-                    <node id="1389167570"/>
-                </destinations>
-            </group>
-            <group>
-                <destinations>
-                    <node id="302806057"/>
-                </destinations>
-            </group>
-        </groups>
+        <phases>
+            <phase>
+                <destination id="1389167570"/>
+            </phase>
+            <phase>
+                <destination id="302806057"/>
+            </phase>
+        </phases>
     </signal>
 </traffic-signals>
