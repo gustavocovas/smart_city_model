@@ -157,7 +157,7 @@ get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->
 
 	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + Time );
 
-get_next_vertex( State, [ CurrentVertex | _ ], _Mode) -> 
+get_next_vertex( State, [ CurrentVertex | [ NextVertex | _ ] ], _Mode) -> 
 	io:format('Tick: ~p; ', [class_Actor:get_current_tick_offset( State )]),
 
 	% Current vertex is an atom here, but at the ets it is a string. Must convert:
@@ -166,12 +166,12 @@ get_next_vertex( State, [ CurrentVertex | _ ], _Mode) ->
 
 	case length(Matches) of
 		0 -> 
-			io:format("No traffic signals at vertex ~p\n", [CurrentVertex]),
+			% io:format("No traffic signals at vertex ~p\n", [CurrentVertex]),
 			move_to_next_vertex(State);
 		_ -> 	
 			{_, TrafficSignalsPid} = lists:nth(1, Matches),
-			io:format("Traffic signal at vertex ~p has pid ~p.\n", [CurrentVertex, TrafficSignalsPid]),
-			class_Actor:send_actor_message(TrafficSignalsPid, {querySignalState, {CurrentVertex}}, State)
+			% io:format("Traffic signal at vertex ~p has pid ~p.\n", [CurrentVertex, TrafficSignalsPid]),
+			class_Actor:send_actor_message(TrafficSignalsPid, {querySignalState, NextVertex}, State)
 	end.
 
 move_to_next_vertex( State ) ->

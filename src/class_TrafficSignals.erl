@@ -80,19 +80,41 @@ onFirstDiasca( State, _SendingActorPid ) ->
 	ScheduledState = executeOneway( State , addSpontaneousTick, CurrentTickOffset + 100 ),
 
 	?wooper_return_state_only( ScheduledState ).
+	
+
+ticksUntilNextPhase(CycleTime, PhaseTime, TickInCycle) ->
+	ToNextPhase = (CycleTime - TickInCycle) rem PhaseTime,
+	if
+		ToNextPhase > 0 -> ToNextPhase;
+		true -> PhaseTime
+	end.
 
 
 -spec querySignalState( wooper:state(), parameter(), pid() ) -> class_Actor:actor_oneway_return().
-querySignalState( State , _NodeId , PersonPID ) ->
-	CycleTime = 60,	
-	CurrentTick = class_Actor:get_current_tick_offset( State ), 
+querySignalState( State , DestinationId , PersonPID ) ->
+	PhaseTime = 60,	
+	CycleTime = 2 * PhaseTime,
 
+	CurrentTick = class_Actor:get_current_tick_offset( State ), 
+	DestinationStr = lists:flatten(io_lib:format("~s", [DestinationId])),
+
+	PhaseMap = getAttribute( State, phase_map ),
+	PhaseId = maps:get(DestinationStr, PhaseMap),
+	
 	TickInCycle = CurrentTick rem (CycleTime),
-	TicksUntilNextCycle = CycleTime - TickInCycle,
+	GreenPhase = if 
+		TickInCycle >= PhaseTime -> 0;
+		true -> 1
+	end,
+
+	TicksUntilNextPhase = ticksUntilNextPhase(CycleTime, PhaseTime, TickInCycle),
+
+	io:format("Current tick: ~p, TickInCycle: ~p, TicksUntilNextCycle: ~p, Phase map: ~p, destination id: ~p, phase id: ~p, GreenPhase: ~p\n", 
+		[CurrentTick, TickInCycle, TicksUntilNextPhase, PhaseMap, DestinationStr, PhaseId, GreenPhase]),
 
 	CurrentLightState = if 
-		TickInCycle > (CycleTime / 2) -> {red, TicksUntilNextCycle};
-		true -> {green, TicksUntilNextCycle}
+		GreenPhase == PhaseId -> {green, TicksUntilNextPhase};
+		true -> {red, TicksUntilNextPhase}
 	end,
 
   class_Actor:send_actor_message( PersonPID, { receive_signal_state, CurrentLightState }, State ).
