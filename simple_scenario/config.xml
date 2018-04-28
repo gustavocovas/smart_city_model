@@ -2,7 +2,7 @@
   <config 
     trip_file="../simple_scenario/trips2.xml" 
     map_file="../simple_scenario/fiandeiras.xml" 
-    output_file="../simple_scenario/events.xml" 
+    output_file="../simple_scenario/simple_scenario.events.xml" 
     traffic_signals_file="../simple_scenario/traffic-signals.xml"
     simulation_time="86400"/>
 </scsimulator_config>
