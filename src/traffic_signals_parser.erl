@@ -9,6 +9,8 @@ show(Filename) ->
             {{Name, Cont}, GS}; 
         (#xmlElement{name=Name, attributes=[#xmlAttribute{name=AttribName, value=AttribValue}], content=Cont}, GS) -> 
             {{Name, [{AttribName, AttribValue}], Cont}, GS}; 
+        (#xmlElement{name=Name, attributes=[#xmlAttribute{name=AttribName1, value=AttribValue1}, #xmlAttribute{name=AttribName2, value=AttribValue2}], content=Cont}, GS) -> 
+            {{Name, [{AttribName1, AttribValue1}, {AttribName2, AttribValue2}], Cont}, GS}; 
         (#xmlElement{name=Name, content=Cont}, GS) -> 
             {{Name, Cont}, GS}; 
         (E, GS) -> 

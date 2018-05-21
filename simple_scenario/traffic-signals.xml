@@ -1,30 +1,17 @@
 <traffic-signals>
     <signal>
         <nodes>
-            <node id="300058941"/>
-        </nodes>
-        <phases>
-            <phase>
-                <destination id="1389167570"/>
-            </phase>
-            <phase>
-                <destination id="302806057"/>
-            </phase>
-        </phases>
-    </signal>
-    <signal>
-        <nodes>
             <node id="1389167554"/>
             <node id="1117834820"/>
         </nodes>
         <phases>
-            <phase>
-                <destination id="302806067"/>
-                <destination id="265577306"/>
+            <phase id="1">
+                <route orig="1389167560" dest="302806067"/>
+                <route orig="1389167560" dest="1389167555"/>
+                <route orig="224815074" dest="265577306"/>
             </phase>
-            <phase>
-                <destination id="1389167554"/>
-                <destination id="1389167555"/>
+            <phase id="2">
+                <route orig="1117834820" dest="1389167555"/>
             </phase>
         </phases>
     </signal>

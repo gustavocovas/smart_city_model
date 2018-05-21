@@ -50,18 +50,17 @@ construct( State, ?wooper_construct_parameters ) ->
 -spec destruct( wooper:state() ) -> wooper:state().
 destruct( State ) -> State.
 
-
-buildPhaseMap(single_phase, PhaseId, Destinations) ->
-	AccumulateDestination = fun(Destination, AccPhaseMap) ->
-		{destination, [{id, DestinationId}], _} = Destination,
-		maps:put(DestinationId, PhaseId, AccPhaseMap)
+buildPhaseMap(single_phase, PhaseId, Routes) ->
+	AccumulateDestination = fun(Route, AccPhaseMap) ->
+		{route, [{orig, OriginId}, {dest, DestinationId}], _} = Route,
+		maps:put({OriginId, DestinationId}, PhaseId, AccPhaseMap)
 	end,
-	lists:foldl(AccumulateDestination, maps:new(), Destinations).
+	lists:foldl(AccumulateDestination, maps:new(), Routes).
 
 buildPhaseMap(Phases) ->
 	AccumulatePhase = fun(Phase, {PhaseId, AccPhaseMap}) ->
-		{phase, Destinations} = Phase,
-		SinglePhaseMap = buildPhaseMap(single_phase, PhaseId, Destinations),
+		{phase, _, Routes} = Phase,
+		SinglePhaseMap = buildPhaseMap(single_phase, PhaseId, Routes),
 		{PhaseId + 1, maps:merge(AccPhaseMap, SinglePhaseMap)} 
 	end,
 
@@ -92,15 +91,16 @@ ticksUntilNextPhase(CycleTime, PhaseTime, TickInCycle) ->
 
 
 -spec querySignalState( wooper:state(), parameter(), pid() ) -> class_Actor:actor_oneway_return().
-querySignalState( State , DestinationId , PersonPID ) ->
+querySignalState( State , {OriginId, DestinationId} , PersonPID ) ->
 	PhaseTime = 60,	
 	CycleTime = 2 * PhaseTime,
 
 	CurrentTick = class_Actor:get_current_tick_offset( State ), 
+	OriginStr = lists:flatten(io_lib:format("~s", [OriginId])),
 	DestinationStr = lists:flatten(io_lib:format("~s", [DestinationId])),
 
 	PhaseMap = getAttribute( State, phase_map ),
-	PhaseId = maps:get(DestinationStr, PhaseMap),
+	PhaseId = maps:get({OriginStr, DestinationStr}, PhaseMap),
 	
 	TickInCycle = CurrentTick rem (CycleTime),
 	GreenPhase = if 
