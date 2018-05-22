@@ -1,18 +1,14 @@
 <traffic-signals>
-    <signal>
+    <signal cycle_duration="60" offset="0">
         <nodes>
-            <node id="1389167554"/>
-            <node id="1117834820"/>
+            <node id="1389167570"/>
+            <node id="1389167571"/>
         </nodes>
         <phases>
-            <phase id="1">
-                <route orig="1389167560" dest="302806067"/>
-                <route orig="1389167560" dest="1389167555"/>
-                <route orig="224815074" dest="265577306"/>
-            </phase>
-            <phase id="2">
-                <route orig="1117834820" dest="1389167555"/>
-            </phase>
+            <phase origin="302806060"  green_duration="25" green_start="0" />
+            <phase origin="1389167570" green_duration="25" green_start="0"/>
+            <phase origin="300058941"  green_duration="25" green_start="30"/>
+            <phase origin="1389167567" green_duration="25" green_start="30"/>
         </phases>
     </signal>
 </traffic-signals>

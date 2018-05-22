@@ -158,14 +158,12 @@ get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->
 
 	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + Time );
 
-get_next_vertex( State, [ CurrentVertex | [ NextVertex | _ ] ], _Mode) -> 
-	io:format('Tick: ~p; ', [class_Actor:get_current_tick_offset( State )]),
-
-	PreviousVertex = getAttribute( State , last_vertex ),
-
+get_next_vertex( State, [ CurrentVertex | _ ], _Mode) -> 
 	% Current vertex is an atom here, but at the ets it is a string. Must convert:
 	CurrentVertexStr = lists:flatten(io_lib:format("~s", [CurrentVertex])),
 	Matches = ets:lookup(traffic_signals, CurrentVertexStr),
+
+	LastVertex = getAttribute(State, last_vertex),
 
 	case length(Matches) of
 		0 -> 
@@ -174,7 +172,7 @@ get_next_vertex( State, [ CurrentVertex | [ NextVertex | _ ] ], _Mode) ->
 		_ -> 	
 			{_, TrafficSignalsPid} = lists:nth(1, Matches),
 			% io:format("Traffic signal at vertex ~p has pid ~p.\n", [CurrentVertex, TrafficSignalsPid]),
-			class_Actor:send_actor_message(TrafficSignalsPid, {querySignalState, {PreviousVertex, NextVertex}}, State)
+			class_Actor:send_actor_message(TrafficSignalsPid, {querySignalState, LastVertex}, State)
 	end.
 
 move_to_next_vertex( State ) ->
@@ -194,7 +192,7 @@ move_to_next_vertex( State ) ->
 
 	TotalLength = getAttribute( State , distance ) + Distance,
 	StateAfterMovement = setAttributes( State , [
-		{distance , TotalLength} , {car_position , Id} ,  {last_vertex, CurrentVertex}, {last_vertex_pid , Edge} , {path , [NextVertex | Path]}] ), 
+		{distance , TotalLength} , {car_position , Id} , {last_vertex, CurrentVertex}, {last_vertex_pid , Edge} , {path , [NextVertex | Path]}] ), 
 
 	io:format('Tick: ~p; ~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n', 
 		[class_Actor:get_current_tick_offset( State ), CurrentVertex, NextVertex, Distance, Time, TotalLength / Time, class_Actor:get_current_tick_offset( StateAfterMovement ) + Time]),

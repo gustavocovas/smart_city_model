@@ -28,7 +28,9 @@
 -spec construct( wooper:state(), class_Actor:actor_settings(), class_Actor:name() , parameter() ) 
 	-> wooper:state().
 construct( State, ?wooper_construct_parameters ) ->
-	{signal, [{nodes, Nodes}, {phases, Phases}]} = Signal,
+	{signal, [{cycle_duration, CycleDurationStr}, {offset, OffsetStr}], [{nodes, Nodes}, {phases, Phases}]} = Signal,
+	{CycleDuration, _} = string:to_integer(CycleDurationStr),
+	{Offset, _} = string:to_integer(OffsetStr),
 
 	lists:foreach(fun(Node) -> 
 		{node, [{id, NodeId}], _} = Node,
@@ -43,29 +45,26 @@ construct( State, ?wooper_construct_parameters ) ->
 	PhaseMap = buildPhaseMap(Phases),
 	
 	ActorState = class_Actor:construct( State , ActorSettings , ActorName ),
-	setAttributes( ActorState , [{signal, Signal}, {phase_map, PhaseMap}] ).
+	setAttributes( ActorState , [{cycle_duration, CycleDuration}, {offset, Offset}, {phase_map, PhaseMap}] ).
 
 % Overridden destructor.
 %
 -spec destruct( wooper:state() ) -> wooper:state().
 destruct( State ) -> State.
 
-buildPhaseMap(single_phase, PhaseId, Routes) ->
-	AccumulateDestination = fun(Route, AccPhaseMap) ->
-		{route, [{orig, OriginId}, {dest, DestinationId}], _} = Route,
-		maps:put({OriginId, DestinationId}, PhaseId, AccPhaseMap)
-	end,
-	lists:foldl(AccumulateDestination, maps:new(), Routes).
 
+% PhaseMap: Tuples with {GreenStart, GreenDuration} indexed by origin vertex id
 buildPhaseMap(Phases) ->
-	AccumulatePhase = fun(Phase, {PhaseId, AccPhaseMap}) ->
-		{phase, _, Routes} = Phase,
-		SinglePhaseMap = buildPhaseMap(single_phase, PhaseId, Routes),
-		{PhaseId + 1, maps:merge(AccPhaseMap, SinglePhaseMap)} 
+	AccumulatePhase = fun(Phase, AccPhaseMap) ->
+		{phase, [{origin, OriginId}, {green_duration, GreenDurationStr}, {green_start, GreenStartStr}], _} = Phase,
+		{GreenStart, _} = string:to_integer(GreenStartStr),
+		{GreenDuration, _} = string:to_integer(GreenDurationStr),
+
+		io:format("~p\n", [maps:put(OriginId, {GreenStart, GreenDuration}, AccPhaseMap)]),
+		maps:merge(AccPhaseMap, maps:put(OriginId, {GreenStart, GreenDuration}, AccPhaseMap))
 	end,
 
-	{_, PhaseMap} = lists:foldl(AccumulatePhase, {0, maps:new()}, Phases),
-	PhaseMap.
+	lists:foldl(AccumulatePhase, maps:new(), Phases).
 
 -spec actSpontaneous( wooper:state() ) -> oneway_return().
 actSpontaneous( State ) ->
@@ -81,41 +80,30 @@ onFirstDiasca( State, _SendingActorPid ) ->
 
 	?wooper_return_state_only( ScheduledState ).
 	
+ticksUntilNextGreen(CycleDuration, TickInCycle, GreenStart, GreenDuration) 
+	when TickInCycle > GreenStart + GreenDuration -> (CycleDuration - TickInCycle) + GreenStart;
 
-ticksUntilNextPhase(CycleTime, PhaseTime, TickInCycle) ->
-	ToNextPhase = (CycleTime - TickInCycle) rem PhaseTime,
-	if
-		ToNextPhase > 0 -> ToNextPhase;
-		true -> PhaseTime
-	end.
+ticksUntilNextGreen(_, TickInCycle, GreenStart, _) 
+	when TickInCycle < GreenStart -> GreenStart - TickInCycle;
 
+ticksUntilNextGreen(_, _, _, _) -> 0.
 
 -spec querySignalState( wooper:state(), parameter(), pid() ) -> class_Actor:actor_oneway_return().
-querySignalState( State , {OriginId, DestinationId} , PersonPID ) ->
-	PhaseTime = 60,	
-	CycleTime = 2 * PhaseTime,
+querySignalState( State , OriginId , PersonPID ) ->
+	Offset = getAttribute(State, offset),
+	CycleDuration = getAttribute(State, cycle_duration),	
 
-	CurrentTick = class_Actor:get_current_tick_offset( State ), 
+	CurrentTick = class_Actor:get_current_tick_offset( State ) - Offset,
 	OriginStr = lists:flatten(io_lib:format("~s", [OriginId])),
-	DestinationStr = lists:flatten(io_lib:format("~s", [DestinationId])),
 
 	PhaseMap = getAttribute( State, phase_map ),
-	PhaseId = maps:get({OriginStr, DestinationStr}, PhaseMap),
-	
-	TickInCycle = CurrentTick rem (CycleTime),
-	GreenPhase = if 
-		TickInCycle >= PhaseTime -> 0;
-		true -> 1
-	end,
+	{GreenStart, GreenDuration} = maps:get(OriginStr, PhaseMap),
 
-	TicksUntilNextPhase = ticksUntilNextPhase(CycleTime, PhaseTime, TickInCycle),
-
-	% io:format("Current tick: ~p, TickInCycle: ~p, TicksUntilNextCycle: ~p, Phase map: ~p, destination id: ~p, phase id: ~p, GreenPhase: ~p\n", 
-		% [CurrentTick, TickInCycle, TicksUntilNextPhase, PhaseMap, DestinationStr, PhaseId, GreenPhase]),
+	TickInCycle = CurrentTick rem (CycleDuration),
 
 	CurrentLightState = if 
-		GreenPhase == PhaseId -> {green, TicksUntilNextPhase};
-		true -> {red, TicksUntilNextPhase}
+		TickInCycle >= GreenStart andalso TickInCycle < TickInCycle + GreenDuration -> {green, 0};
+		true -> {red, ticksUntilNextGreen(CycleDuration, TickInCycle, GreenStart, GreenDuration)}
 	end,
 
   class_Actor:send_actor_message( PersonPID, { receive_signal_state, CurrentLightState }, State ).

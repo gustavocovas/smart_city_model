@@ -4,15 +4,13 @@
 -export([show/1]).
 
 show(Filename) -> 
-    HookFun = fun(#xmlElement{name=Name, content=[Cont]}, GS) when 
-        is_list(Cont) -> 
+    HookFun = fun
+        (#xmlElement{name=Name, attributes=[], content=Cont}, GS) -> 
             {{Name, Cont}, GS}; 
-        (#xmlElement{name=Name, attributes=[#xmlAttribute{name=AttribName, value=AttribValue}], content=Cont}, GS) -> 
-            {{Name, [{AttribName, AttribValue}], Cont}, GS}; 
-        (#xmlElement{name=Name, attributes=[#xmlAttribute{name=AttribName1, value=AttribValue1}, #xmlAttribute{name=AttribName2, value=AttribValue2}], content=Cont}, GS) -> 
-            {{Name, [{AttribName1, AttribValue1}, {AttribName2, AttribValue2}], Cont}, GS}; 
-        (#xmlElement{name=Name, content=Cont}, GS) -> 
-            {{Name, Cont}, GS}; 
+        (#xmlElement{name=Name, attributes=Attributes, content=Cont}, GS) -> 
+            {{Name, lists:map(
+                fun(#xmlAttribute{name=AttribName, value=AttribValue}) -> 
+                    {AttribName, AttribValue} end, Attributes), Cont}, GS}; 
         (E, GS) -> 
             {E, GS} 
     end,
@@ -25,5 +23,7 @@ show(Filename) ->
         (_E,Acc,GS) -> {[_E|Acc], GS} 
     end,
     
-    {{'traffic-signals', Signals}, _} = xmerl_scan:file(Filename, [{hook_fun, HookFun}, {acc_fun, AccFun}]),
+    {{'traffic-signals', Signals}, _} = xmerl_scan:file(
+        Filename, [{hook_fun, HookFun}, {acc_fun, AccFun}]),
+    io:format("Parsed traffic signals from xml\n"),
     Signals.

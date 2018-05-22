@@ -51,7 +51,7 @@ create_buses( [ Bus | Buses ] , CityGraph  ) ->
 
 create_traffic_signals([]) -> ok;
 create_traffic_signals([Signal | Signals]) ->
-	{signal, [{nodes, [{node, [{id, NodeId}], _} | _]}, _]} = Signal,
+	{signal, _, [{nodes, [{node, [{id, NodeId}], _} | _]}, _]} = Signal,
 	class_Actor:create_initial_actor(class_TrafficSignals, 
 		[string:concat("traffic-signals-at-node-", NodeId), Signal]),
 
