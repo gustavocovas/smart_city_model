@@ -1,243 +1,110 @@
 <traffic-signals>
-  <signal>
-  <!-- TODO: Paulista / Consolação -->
+  <!-- Paulista x Bela Cintra -->
+  <signal cycle_duration="60" offset="0"> 
     <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
+      <node id="2098758071"/>
+      <node id="60609643"/>
     </nodes>
     <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
+      <phase origin="4236712736"  green_duration="25" green_start="0" />
+      <phase origin="5381067434" green_duration="25" green_start="0"/>
+
+      <phase origin="60624635"  green_duration="25" green_start="30"/>
+      <phase origin="2098758071" green_duration="25" green_start="30"/>
     </phases>
   </signal>
-  <signal>
-  <!-- TODO: Paulista / Bela Cintra -->
+
+  <!-- Paulista x Haddock Lobo -->
+  <signal cycle_duration="60" offset="0"> 
     <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
+      <node id="1953466362"/>
+      <node id="1953466364"/>
     </nodes>
     <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
+      <phase origin="1819616337"  green_duration="25" green_start="0" />
+      <phase origin="4124282297" green_duration="25" green_start="0"/>
+
+      <phase origin="1953466362"  green_duration="25" green_start="30"/>
+      <phase origin="2006973647" green_duration="25" green_start="30"/>
     </phases>
   </signal>
-  <signal>
-  <!-- TODO: Paulista / Haddock Lobo -->
+
+  <!-- Paulista x Augusta -->
+  <signal cycle_duration="60" offset="0"> 
     <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
+      <node id="1953466363"/>
+      <node id="1953466357"/>
     </nodes>
     <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
+      <phase origin="165466550"  green_duration="25" green_start="0" />
+      <phase origin="165459105" green_duration="25" green_start="0"/>
+
+      <phase origin="60624611"  green_duration="25" green_start="30"/>
+      <phase origin="165467520"  green_duration="25" green_start="30"/>
+      <phase origin="1953466363"  green_duration="25" green_start="30"/>
+      <phase origin="1953466357"  green_duration="25" green_start="30"/>
     </phases>
   </signal>
-  <signal>
-  <!-- TODO: Paulista / Augusta -->
+
+  <!-- Paulista x Min. Rocha Azevedo -->
+  <signal cycle_duration="60" offset="0"> 
     <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
+      <node id="1953466367"/>
+      <node id="1953466365"/>
     </nodes>
     <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
+      <phase origin="1953466375"  green_duration="25" green_start="0" />
+      <phase origin="60609673" green_duration="25" green_start="0"/>
+
+      <phase origin="1953466367"  green_duration="25" green_start="30"/>
+      <phase origin="60624571"  green_duration="25" green_start="30"/>
     </phases>
   </signal>
-  <signal>
-  <!-- TODO: Paulista / Min. Rocha Azevedo -->
+
+  <!-- Paulista x R. Peixoto Gomide -->
+  <signal cycle_duration="60" offset="0"> 
     <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
+      <node id="1953466375"/>
+      <node id="1953466354"/>
     </nodes>
     <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
+      <phase origin="1953466367"  green_duration="25" green_start="0" />
+      <phase origin="165463204" green_duration="25" green_start="0"/>
+
+      <phase origin="1953466375"  green_duration="25" green_start="30"/>
+      <phase origin="1735978065"  green_duration="25" green_start="30"/>
     </phases>
   </signal>
-  <signal>
-  <!-- TODO: Paulista / Peixoto Gomide -->
+
+  <!-- Paulista x Al. Casa Branca -->
+  <signal cycle_duration="60" offset="0"> 
     <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
+      <node id="60609692"/>
+      <node id="60609697"/>
     </nodes>
     <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
+      <phase origin="2352453476"  green_duration="25" green_start="0" />
+      <phase origin="2869020072" green_duration="25" green_start="0"/>
+
+      <phase origin="60609692"  green_duration="25" green_start="30"/>
+      <phase origin="60609766"  green_duration="25" green_start="30"/>
     </phases>
   </signal>
-  <signal>
-  <!-- TODO: Paulista / Casa Branca -->
+
+  <!-- Paulista x Pamplona -->
+  <signal cycle_duration="60" offset="0"> 
     <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
+      <node id="1990911134"/>
+      <node id="1990911135"/>
     </nodes>
     <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
+      <phase origin="60609692"  green_duration="25" green_start="0" />
+      <phase origin="1953466360" green_duration="25" green_start="0"/>
+
+      <phase origin="1990911134"  green_duration="25" green_start="30"/>
+      <phase origin="4259655865"  green_duration="25" green_start="30"/>
     </phases>
   </signal>
-  <signal>
-  <!-- TODO: Paulista / Pamplona -->
-    <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
-    </nodes>
-    <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
-    </phases>
-  </signal>
-  <signal>
-  <!-- TODO: Paulista / Campinas -->
-    <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
-    </nodes>
-    <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
-    </phases>
-  </signal>
-  <signal>
-  <!-- TODO: Paulista / Joaquim Eugênio de Lima -->
-    <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
-    </nodes>
-    <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
-    </phases>
-  </signal>
-  <signal>
-  <!-- TODO: Paulista / Brig. Luís Antônio -->
-    <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
-    </nodes>
-    <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
-    </phases>
-  </signal>
-  <signal>
-  <!-- TODO: Paulista / Carlos Sampaio -->
-    <nodes>
-      <node id="1389167554"/>
-      <node id="1117834820"/>
-    </nodes>
-    <phases>
-      <phase>
-        <destination id="302806067"/>
-        <destination id="265577306"/>
-      </phase>
-      <phase>
-        <destination id="1389167554"/>
-        <destination id="1389167555"/>
-      </phase>
-    </phases>
-  </signal>
-  <signal>
-  <!-- Paulista / Teixeira da Silva -->
-    <nodes>
-      <node id="303863647"/>
-      <node id="1953466373"/>
-    </nodes>
-    <phases>
-      <phase id="1">
-        <route orig="1953466358" dest="303863453"/>
-        <route orig="60609822" dest="1953466378"/>
-        <route orig="60609822" dest="303863648"/>
-      </phase>
-      <phase id="2">
-        <route orig="303863292" dest="303863453"/>
-        <route orig="303863292" dest="303863647"/>
-        <route orig="1953466373" dest="303863648"/>
-      </phase>
-    </phases>
-  </signal>
-  <signal>
-  <!-- Paulista / Pç Oswaldo Cruz -->
-    <nodes>
-      <node id="60609866"/>
-      <node id="60609822"/>
-    </nodes>
-    <phases>
-      <phase id="1">
-        <route orig="60609819" dest="303863647"/>
-        <route orig="303863453" dest="60609874"/>
-        <route orig="303863453" dest="2466376871"/>
-      </phase>
-      <phase id="2">
-        <route orig="4962324520" dest="60609866"/>
-        <route orig="60609866" dest="2466376871"/>
-      </phase>
-    </phases>
-  </signal>
+
+  <!-- TODO: More signals... -->
 </traffic-signals>

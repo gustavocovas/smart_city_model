@@ -50,11 +50,14 @@ create_buses( [ Bus | Buses ] , CityGraph  ) ->
 	create_buses( Buses , CityGraph  ).
 
 create_traffic_signals([]) -> ok;
-create_traffic_signals([Signal | Signals]) ->
-	{signal, _, [{nodes, [{node, [{id, NodeId}], _} | _]}, _]} = Signal,
+create_traffic_signals([{signal, SignalAttribs, SignalContent} | Signals]) ->
+	[{nodes, [{node, [{id, NodeId}], _} | _]}, _] = SignalContent,
 	class_Actor:create_initial_actor(class_TrafficSignals, 
-		[string:concat("traffic-signals-at-node-", NodeId), Signal]),
+		[string:concat("traffic-signals-at-node-", NodeId), {signal, SignalAttribs, SignalContent}]),
 
+	create_traffic_signals(Signals);
+
+create_traffic_signals([_ | Signals]) ->
 	create_traffic_signals(Signals).
 
 calculate_bus_path( [ Stop | List ] , CityGraph  , Path ) ->

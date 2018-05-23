@@ -60,7 +60,6 @@ buildPhaseMap(Phases) ->
 		{GreenStart, _} = string:to_integer(GreenStartStr),
 		{GreenDuration, _} = string:to_integer(GreenDurationStr),
 
-		io:format("~p\n", [maps:put(OriginId, {GreenStart, GreenDuration}, AccPhaseMap)]),
 		maps:merge(AccPhaseMap, maps:put(OriginId, {GreenStart, GreenDuration}, AccPhaseMap))
 	end,
 
@@ -81,7 +80,7 @@ onFirstDiasca( State, _SendingActorPid ) ->
 	?wooper_return_state_only( ScheduledState ).
 	
 ticksUntilNextGreen(CycleDuration, TickInCycle, GreenStart, GreenDuration) 
-	when TickInCycle > GreenStart + GreenDuration -> (CycleDuration - TickInCycle) + GreenStart;
+	when TickInCycle >= GreenStart + GreenDuration -> (CycleDuration - TickInCycle) + GreenStart;
 
 ticksUntilNextGreen(_, TickInCycle, GreenStart, _) 
 	when TickInCycle < GreenStart -> GreenStart - TickInCycle;
@@ -102,7 +101,7 @@ querySignalState( State , OriginId , PersonPID ) ->
 	TickInCycle = CurrentTick rem (CycleDuration),
 
 	CurrentLightState = if 
-		TickInCycle >= GreenStart andalso TickInCycle < TickInCycle + GreenDuration -> {green, 0};
+		TickInCycle >= GreenStart andalso TickInCycle < GreenStart + GreenDuration -> {green, 0};
 		true -> {red, ticksUntilNextGreen(CycleDuration, TickInCycle, GreenStart, GreenDuration)}
 	end,
 

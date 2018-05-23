@@ -1,0 +1,8 @@
+<scsimulator_config>
+  <config 
+    trip_file="../av_paulista_scenario/trips.xml" 
+    map_file="../av_paulista_scenario/network.xml" 
+    output_file="../av_paulista_scenario/av_paulista_scenario.events.xml" 
+    traffic_signals_file="../av_paulista_scenario/signals.xml"
+    simulation_time="86400"/>
+</scsimulator_config>
