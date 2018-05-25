@@ -1,4 +1,4 @@
 <scsimulator_matrix>
-  <trip name="0" origin="1952545091" destination="60609874" link_origin="872" count="1" start="100" mode="car" />
-  <!-- <trip name="1" origin="60609819" destination="1421376041" link_origin="1425" count="1" start="100" mode="car" /> -->
+  <trip name="0" origin="1952545091" destination="60609874" link_origin="872" count="5" start="100" mode="car" />
+  <trip name="1" origin="60609819" destination="1421376041" link_origin="1425" count="5" start="100" mode="car" />
 </scsimulator_matrix>
