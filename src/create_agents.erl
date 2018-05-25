@@ -24,10 +24,11 @@ verify_list( ListCount , [ Car | MoreCars] , Graph , Name , MainPID ) ->
 create_person( Car , Graph ) ->
 	{ Origin , Destination , CarCount , ST , LinkOrigin , Type , Mode , NameFile , Park } = Car,
         { STInteger , _ } = string:to_integer( ST ),
-	StartTime = case STInteger > 800 of
-		true -> STInteger - 800 + class_RandomManager:get_uniform_value( 200 );
-		false -> STInteger + class_RandomManager:get_uniform_value( 200 )
-	end,
+	% StartTime = case STInteger > 800 of
+	% 	true -> STInteger - 800 + class_RandomManager:get_uniform_value( 200 );
+	% 	false -> STInteger + class_RandomManager:get_uniform_value( 200 )
+	% end,
+	StartTime = STInteger,
 
 	ModeFinal = case Mode of
 		ok ->
@@ -46,10 +47,11 @@ create_person_multi_trip( Car , Graph  ) ->
 
 	{ ST , Type , CarCount , ListTrips , NameFile , Mode } = Car,
         { STInteger , _ } = string:to_integer( ST ),
-	StartTime = case STInteger > 800 of
-		true -> STInteger - 800 + class_RandomManager:get_uniform_value( 200 );
-		false -> STInteger + class_RandomManager:get_uniform_value( 200 )
-	end,
+	% StartTime = case STInteger > 800 of
+	% 	true -> STInteger - 800 + class_RandomManager:get_uniform_value( 200 );
+	% 	false -> STInteger + class_RandomManager:get_uniform_value( 200 )
+	% end,
+	StartTime = STInteger,
 	
 	ListTripsFinal = create_single_trip( ListTrips , [] , Graph ),
 

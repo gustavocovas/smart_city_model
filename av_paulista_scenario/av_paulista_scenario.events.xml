@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<events version="1.0">
+<event time="120" type="actend" person="0_1" link="872" actType="h" action="ok" />
+<event time="120" type="departure" person="0_1" link="872" legMode="car" action="ok" />
+<event time="120" type="PersonEntersVehicle" person="0_1" vehicle="0_1" action="ok" />
+<event time="120" type="wait2link" person="0_1" link="872" vehicle="0_1" action="ok" />
+<event time="120" type="entered link" person="0_1" link="1688" vehicle="0_1" action="ok" />
+<event time="131" type="left link" person="0_1" link="1688" vehicle="0_1" action="ok" />
+<event time="131" type="entered link" person="0_1" link="1689" vehicle="0_1" action="ok" />
+<event time="160" type="left link" person="0_1" link="1689" vehicle="0_1" action="ok" />
+<event time="160" type="entered link" person="0_1" link="1252" vehicle="0_1" action="ok" />
+<event time="164" type="left link" person="0_1" link="1252" vehicle="0_1" action="ok" />
+<event time="164" type="entered link" person="0_1" link="1253" vehicle="0_1" action="ok" />
+<event time="229" type="left link" person="0_1" link="1253" vehicle="0_1" action="ok" />
+<event time="229" type="entered link" person="0_1" link="1254" vehicle="0_1" action="ok" />
+<event time="233" type="left link" person="0_1" link="1254" vehicle="0_1" action="ok" />
+<event time="233" type="entered link" person="0_1" link="2569" vehicle="0_1" action="ok" />
+<event time="246" type="left link" person="0_1" link="2569" vehicle="0_1" action="ok" />
+<event time="246" type="entered link" person="0_1" link="348" vehicle="0_1" action="ok" />
+<event time="264" type="left link" person="0_1" link="348" vehicle="0_1" action="ok" />
+<event time="264" type="entered link" person="0_1" link="349" vehicle="0_1" action="ok" />
+<event time="287" type="left link" person="0_1" link="349" vehicle="0_1" action="ok" />
+<event time="287" type="entered link" person="0_1" link="374" vehicle="0_1" action="ok" />
+<event time="330" type="left link" person="0_1" link="374" vehicle="0_1" action="ok" />
+<event time="330" type="entered link" person="0_1" link="375" vehicle="0_1" action="ok" />
+<event time="348" type="left link" person="0_1" link="375" vehicle="0_1" action="ok" />
+<event time="348" type="entered link" person="0_1" link="376" vehicle="0_1" action="ok" />
+<event time="393" type="left link" person="0_1" link="376" vehicle="0_1" action="ok" />
+<event time="393" type="entered link" person="0_1" link="379" vehicle="0_1" action="ok" />
+<event time="429" type="left link" person="0_1" link="379" vehicle="0_1" action="ok" />
+<event time="429" type="entered link" person="0_1" link="380" vehicle="0_1" action="ok" />
+<event time="478" type="left link" person="0_1" link="380" vehicle="0_1" action="ok" />
+<event time="478" type="entered link" person="0_1" link="417" vehicle="0_1" action="ok" />
+<event time="504" type="left link" person="0_1" link="417" vehicle="0_1" action="ok" />
+<event time="504" type="entered link" person="0_1" link="1659" vehicle="0_1" action="ok" />
+<event time="560" type="left link" person="0_1" link="1659" vehicle="0_1" action="ok" />
+<event time="560" type="entered link" person="0_1" link="472" vehicle="0_1" action="ok" />
+<event time="566" type="left link" person="0_1" link="472" vehicle="0_1" action="ok" />
+<event time="566" type="entered link" person="0_1" link="76" vehicle="0_1" action="ok" />
+<event time="589" type="left link" person="0_1" link="76" vehicle="0_1" action="ok" />
+<event time="589" type="entered link" person="0_1" link="77" vehicle="0_1" action="ok" />
+<event time="660" type="left link" person="0_1" link="77" vehicle="0_1" action="ok" />
+<event time="660" type="entered link" person="0_1" link="469" vehicle="0_1" action="ok" />
+<event time="676" type="left link" person="0_1" link="469" vehicle="0_1" action="ok" />
+<event time="676" type="entered link" person="0_1" link="470" vehicle="0_1" action="ok" />
+<event time="720" type="left link" person="0_1" link="470" vehicle="0_1" action="ok" />
+<event time="720" type="entered link" person="0_1" link="40" vehicle="0_1" action="ok" />
+<event time="759" type="vehicle leaves traffic" person="0_1" link="40" vehicle="0_1" relativePosition="1.0" />
+<event time="759" type="PersonLeavesVehicle" person="0_1" vehicle="0_1"/>
+<event time="759" type="arrival" person="0_1" vehicle="0_1" link="40" legMode="car" trip_time="639" distance="4926" action="ok"/>
+<event time="759" type="actstart" person="0_1"  link="40"  actType="h"  />
+</events>

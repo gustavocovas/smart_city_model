@@ -7,21 +7,23 @@
 
 get_speed_car( LinkData ) ->
 
-	{ _ , Id , Length , Capacity , Freespeed , NumberCars } = LinkData,
+	{ _ , Id , Length , _ , Freespeed , _ } = LinkData,	
+	% { _ , Id , Length , Capacity , Freespeed , NumberCars } = LinkData,
 
-	MinimumDensity = (Capacity * 0.3) 	 ,
-	Speed = case NumberCars > MinimumDensity of
+	% MinimumDensity = (Capacity * 0.3) 	 ,
+	% Speed = case NumberCars > MinimumDensity of
 
-		true ->
-			case NumberCars >= Capacity of
-				true ->
-					0.8;
-				false ->
-					Freespeed * math:pow ( 1 - ( NumberCars / Capacity ) , 0.6)
-			end;
-		false ->
-			Freespeed
-	end,
+	% 	true ->
+	% 		case NumberCars >= Capacity of
+	% 			true ->
+	% 				0.8;
+	% 			false ->
+	% 				Freespeed * math:pow ( 1 - ( NumberCars / Capacity ) , 0.6)
+	% 		end;
+	% 	false ->
+	% 		Freespeed
+	% end,
+	Speed = Freespeed,
 
 	Time = ( Length / Speed ) + 1,
 	{ Id , round( Time ) , round ( Length ) }.

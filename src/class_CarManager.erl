@@ -85,7 +85,8 @@ init_cars( [ Car | Cars ] , State ) ->
 create_person_car( 0 , State , _CarName , _ListTripsFinal , _Type , _Park , _Mode ) -> State;
 create_person_car( Count , State , CarName , ListTripsFinal , Type , Park , Mode ) ->
 	CarFinalName = io_lib:format( "~s_~B", [ CarName , Count ] ),
-	StartTime = class_RandomManager:get_uniform_value( 1200 ),
+	% StartTime = class_RandomManager:get_uniform_value( 1200 ),
+	StartTime = 20,
 
 	NewState = class_Actor:create_actor( class_Car,
 		[ CarFinalName , ListTripsFinal , StartTime , Type , Park , Mode ] , State ),
@@ -96,7 +97,8 @@ create_person_car( Count , State , CarName , ListTripsFinal , Type , Park , Mode
 create_person_public( _Count = 0 , State , _CarName , _ListTripsFinal , _Type , _Mode ) -> State;
 create_person_public( Count , State , CarName , ListTripsFinal , Type , Mode ) ->
 	CarFinalName = io_lib:format( "~s_~B", [ CarName , Count ] ),
-	StartTime = class_RandomManager:get_uniform_value( 1200 ),
+	% StartTime = class_RandomManager:get_uniform_value( 1200 ),
+	StartTime = 20,
 
 	NewState = class_Actor:create_actor( class_Person,
 		[ CarFinalName , ListTripsFinal , StartTime , Type , Mode ]  , State ),
