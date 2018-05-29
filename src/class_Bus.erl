@@ -235,7 +235,8 @@ move( State , Path , Position , IdBus , InitialVertice , Bus , CurrentTickOffset
 			ets:update_counter( list_streets , Vertices , { 6 , 3 }),
 			Data = lists:nth( 1, ets:lookup( list_streets , Vertices ) ),
 
-			StreetData = traffic_models:get_speed_car( Data ),
+			% TODO: Get traffic model from state
+			StreetData = traffic_models:get_speed_car(Data, car_following),
 
                         go( FinalBusState , StreetData , IdBus );
 

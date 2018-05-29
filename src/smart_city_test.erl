@@ -1,5 +1,4 @@
 % Author: Eduardo Santana (efzambom@ime.usp.br)
-
 -module(smart_city_test).
 
 % For all facilities common to all tests:
@@ -8,7 +7,6 @@
 % for each vertex is necessary to save its out links
 create_map_list([] , _Graph ) -> [];
 create_map_list([Element | MoreElements] , Graph ) ->
-	
 	{_, V1, V2, Label} = digraph:edge( Graph , Element ),
 
 	Id = element( 1 , Label),
@@ -34,7 +32,6 @@ create_street_list([Element | MoreElements] , List , Graph) ->
 
 create_buses( [] , _CityGraph  ) -> ok;
 create_buses( [ Bus | Buses ] , CityGraph  ) -> 
-
 	Id = element( 1 , Bus ),
 	Interval = element( 2 , Bus ),
 	Stops = element( 3 , Bus ),
@@ -75,12 +72,12 @@ calculate_bus_path( [ Stop | List ] , CityGraph  , Path ) ->
 			Path
 	end.	
 
-spaw_proccess( [] , _CityGraph ) -> ok;
-spaw_proccess( [ List | MoreLists ] , CityGraph ) ->
+spaw_proccess( [] , _CityGraph, _TrafficModel ) -> ok;
+spaw_proccess( [ List | MoreLists ] , CityGraph, TrafficModel ) ->
 	{ Name , ListTrips } = List,
 
-	spawn( create_agents, iterate_list , [ 1 , ListTrips , CityGraph , Name , self() ]),
-	spaw_proccess( MoreLists , CityGraph ).
+	spawn( create_agents, iterate_list , [ 1 , ListTrips , CityGraph , Name , self(), TrafficModel ]),
+	spaw_proccess( MoreLists , CityGraph, TrafficModel ).
 
 split_list( [] , _NumberLists , _ListSplit , ListReturn ) -> ListReturn;
 split_list( [ Name | Names ] , NumberLists , ListSplit , ListReturn ) ->
@@ -107,36 +104,25 @@ readConfigPath() ->
 
 -spec run() -> no_return().
 run() ->	
-
 	?test_start,
 	
 	% Use default simulation settings (50Hz, batch reproducible):
 	SimulationSettings = #simulation_settings{
+		simulation_name = "Sim-Diasca Smart City Integration Test",
+		tick_duration = 1
+		% We leave it to the default specification (all_outputs):
+		% result_specification =
+		%  [ { targeted_patterns, [ {".*",[data_and_plot]} ] },
+		%    { blacklisted_patterns, ["^Second" ] } ]
 
-							simulation_name = "Sim-Diasca Smart City Integration Test",
-
-							tick_duration = 1
-
-							% We leave it to the default specification (all_outputs):
-							% result_specification =
-							%  [ { targeted_patterns, [ {".*",[data_and_plot]} ] },
-							%    { blacklisted_patterns, ["^Second" ] } ]
-
-							%result_specification = [ { targeted_patterns, [ {".*",data_only} ] } ]
-
-						   },
-
+		%result_specification = [ { targeted_patterns, [ {".*",data_only} ] } ]
+	},
 
 	DeploymentSettings = #deployment_settings{
-
-							computing_hosts = { use_host_file_otherwise_local,
-												"sim-diasca-host-candidates.txt" },
-
-							additional_elements_to_deploy = [ { ".", code } ],
-
-							enable_performance_tracker = false
-
-						   },
+		computing_hosts = { use_host_file_otherwise_local, "sim-diasca-host-candidates.txt" },
+		additional_elements_to_deploy = [ { ".", code } ],
+		enable_performance_tracker = false
+	},
 
 	% Default load balancing settings (round-robin placement heuristic):
 	LoadBalancingSettings = #load_balancing_settings{},
@@ -145,21 +131,15 @@ run() ->
 	DeploymentManagerPid = sim_diasca:init( SimulationSettings, DeploymentSettings, LoadBalancingSettings ),
 
 	ConfigPath = readConfigPath(),
-
 	Config = config_parser:show( ConfigPath ),
 
 	ListCars = trip_parser:show( element( 4 , Config ) ), % Read the cars from the trips.xml file
-
 	CityGraph = map_parser:show( element( 3 , Config ) , false ), % Read the map from the map.xml file
-
 	MetroFile = element( 5 , Config ), % Read the metro graph from the city. TODO: verify if this configurition does not exist.
-
 	ListBuses = bus_parser:show( element( 6 , Config ) ), % Read the list of buses. TODO: verify if this configurition does not exist.
-
-	io:format("read parks"),
 	ParkSpots = park_parser:read_csv( element( 7 , Config ) ), 
-
 	TrafficSignals = traffic_signals_parser:show( element( 8, Config ) ),
+	TrafficModel = list_to_atom( element( 10 , Config ) ),
 
 	ListEdges = create_street_list( CityGraph ),
 
@@ -169,16 +149,16 @@ run() ->
 
 	LogName = string:concat( OutputPath, element( 1 , Config ) ),
 	Paths = [ AmqpClientPath,
-			string:concat( AmqpClientPath, "/ebin" ),
-			string:concat( AmqpClientPath, "/include/rabbit_common/ebin" )
-		],
-        class_Actor:create_initial_actor( class_Street,  [ "Street" , ListEdges , LogName , Paths ] ),
+		string:concat( AmqpClientPath, "/ebin" ),
+		string:concat( AmqpClientPath, "/include/rabbit_common/ebin" )
+	],
 
+	class_Actor:create_initial_actor( class_Street,  [ "Street" , ListEdges , LogName , Paths ] ),
 	class_Actor:create_initial_actor( class_Metro, [ "MetroCity" , string:concat( OutputPath , MetroFile ) ] ), 
 
 	case element( 8 , Config ) of % verify if it is necessary to generate the city graph actor 
 		"true" ->
-			 class_Actor:create_initial_actor( class_City, [ "City" , { string:concat( OutputPath, element( 3 , Config ) ) } ] );
+			class_Actor:create_initial_actor( class_City, [ "City" , { string:concat( OutputPath, element( 3 , Config ) ) } ] );
 		_ ->
 			ok
 	end,
@@ -194,13 +174,11 @@ run() ->
 
 	List = split_list( Names , length ( Names ) , ListCars , []  ),   
 
-	spaw_proccess( List , CityGraph ),
+	spaw_proccess( List , CityGraph, TrafficModel ),
  
 	collectResults( Names ),
 
 	create_buses( ListBuses , CityGraph  ),
-
-	% TODO: Implement each signal as an actor
 	create_traffic_signals(TrafficSignals),
 
 	SimulationDuration = element( 1 , string:to_integer(element( 2 , Config ) ) ),
@@ -217,9 +195,7 @@ run() ->
 				"since having been declared as a simulation listener." ),
 
 	receive
-
 		simulation_stopped ->
-
 			?test_info( "Simulation stopped spontaneously, "
 						"specified stop tick must have been reached." )
 

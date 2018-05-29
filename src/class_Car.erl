@@ -4,17 +4,17 @@
 -define( wooper_superclasses, [ class_Actor ] ).
 
 % parameters taken by the constructor ('construct').
--define( wooper_construct_parameters, ActorSettings, CarName , ListTripsFinal , StartTime , Type , Park , Mode ).
+-define( wooper_construct_parameters, ActorSettings, CarName , ListTripsFinal , StartTime , Type , Park , Mode, TrafficModel ).
 
 % Declaring all variations of WOOPER-defined standard life-cycle operations:
 % (template pasted, just two replacements performed to update arities)
--define( wooper_construct_export, new/7, new_link/7,
-		 synchronous_new/7, synchronous_new_link/7,
-		 synchronous_timed_new/7, synchronous_timed_new_link/7,
-		 remote_new/8, remote_new_link/8, remote_synchronous_new/8,
-		 remote_synchronous_new_link/8, remote_synchronisable_new_link/8,
-		 remote_synchronous_timed_new/8, remote_synchronous_timed_new_link/8,
-		 construct/8, destruct/1 ).
+-define( wooper_construct_export, new/8, new_link/8,
+		 synchronous_new/8, synchronous_new_link/8,
+		 synchronous_timed_new/8, synchronous_timed_new_link/8,
+		 remote_new/9, remote_new_link/9, remote_synchronous_new/9,
+		 remote_synchronous_new_link/9, remote_synchronisable_new_link/9,
+		 remote_synchronous_timed_new/9, remote_synchronous_timed_new_link/9,
+		 construct/9, destruct/1 ).
 
 % Method declarations.
 -define( wooper_method_export, actSpontaneous/1, onFirstDiasca/2, get_parking_spot/3 , set_new_path/3, receive_signal_state/3 ).
@@ -27,7 +27,7 @@
 
 % Creates a new agent that is a person that moves around the city
 -spec construct( wooper:state(), class_Actor:actor_settings(),
-				class_Actor:name(), pid() , parameter() , parameter() , parameter() , parameter() ) -> wooper:state().
+				class_Actor:name(), pid() , parameter() , parameter() , parameter() , parameter(), parameter() ) -> wooper:state().
 construct( State, ?wooper_construct_parameters ) ->
 
 	ActorState = class_Actor:construct( State, ActorSettings, CarName ),
@@ -45,7 +45,8 @@ construct( State, ?wooper_construct_parameters ) ->
 		{ path , Path },
 		{ mode , Mode },
 		{ last_vertex , ok },
-		{ last_vertex_pid , ok }
+		{ last_vertex_pid , ok },
+		{ traffic_model, TrafficModel}
 						] ),
 
 	case Park of
@@ -149,7 +150,7 @@ get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->
 	Vertices = list_to_atom( lists:concat( [ Current , lists:nth( 1 , Path ) ] )),
 	
 	Data = lists:nth( 1, ets:lookup( list_streets , Vertices ) ),
-	{ Id , Time , Distance } = traffic_models:get_speed_walk( Data ),
+	{ Id , Time , Distance } = traffic_models:get_speed_walk(Data, getAttribute(State, traffic_model)),
 
 	TotalLength = getAttribute( State , distance ) + Distance,
 	FinalState = setAttributes( State , [ { distance , TotalLength } , { car_position , Id } , { path , Path } ] ), 
@@ -188,7 +189,7 @@ move_to_next_vertex( State ) ->
 	ets:update_counter( list_streets , Edge , { 6 , 1 }),
 	Data = lists:nth( 1, ets:lookup( list_streets , Edge ) ),
 
-	{ Id , Time , Distance } = traffic_models:get_speed_car( Data ),
+	{ Id , Time , Distance } = traffic_models:get_speed_car(Data, getAttribute(State, traffic_model)),
 
 	TotalLength = getAttribute( State , distance ) + Distance,
 	StateAfterMovement = setAttributes( State , [
@@ -232,6 +233,7 @@ set_new_path( State , NewPath , _CityPID ) ->
 
 -spec onFirstDiasca( wooper:state(), pid() ) -> oneway_return().
 onFirstDiasca( State, _SendingActorPid ) ->
+	% TODO: Why this is needed?
 	StartTime = getAttribute( State , start_time ),
     	FirstActionTime = class_Actor:get_current_tick_offset( State ) + StartTime,   	
 	NewState = setAttribute( State , start_time , FirstActionTime ),

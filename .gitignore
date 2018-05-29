@@ -5,9 +5,8 @@ src/*.swp
 src/*.sdar
 src/erl_crash.dump
 
-example/events.xml
-simple_scenario/*events.xml
-simple_scenario/*events.xml.gz
+**/*.events.xml
+**/*.events.xml.gz
 
 src/Sim-Diasca_Smart_City_Integration_Test*
 interscsimulator.conf
