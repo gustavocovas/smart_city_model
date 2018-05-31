@@ -1,0 +1,10 @@
+<scsimulator_config>
+  <config 
+    trip_file="../av_paulista_digital_rails_scenario/trips.xml" 
+    map_file="../av_paulista_digital_rails_scenario/network.xml" 
+    output_file="../av_paulista_digital_rails_scenario/av_paulista_digital_rails_scenario.events.xml" 
+    traffic_signals_file="../av_paulista_digital_rails_scenario/signals.xml"
+    traffic_model="freespeed"
+    randomize_start_times="false"
+    simulation_time="86400"/>
+</scsimulator_config>
