@@ -6,7 +6,6 @@ src/*.sdar
 src/erl_crash.dump
 
 **/*.events.xml
-**/*.events.xml.gz
 **/*.mvi
 
 src/Sim-Diasca_Smart_City_Integration_Test*
