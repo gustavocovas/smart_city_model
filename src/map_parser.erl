@@ -121,7 +121,8 @@ extract_link(Link , Graph ) ->
 			Length = children( Attributes , length ),
 			Capacity = children ( Attributes , capacity ),
 			Freespeed = children( Attributes , freespeed ),
-			digraph:add_edge(Graph, list_to_atom(From), list_to_atom(To), { Id , Length , Capacity , Freespeed });
+			Lanes = children( Attributes , permlanes ),
+			digraph:add_edge(Graph, list_to_atom(From), list_to_atom(To), { Id , Length , Capacity , Freespeed, Lanes });
 
 		_ ->
 			ok

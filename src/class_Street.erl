@@ -92,9 +92,11 @@ iterate_list([]) -> ok;
 iterate_list([ Element | List ]) ->
 	
 	Vertices = element( 1, Element),
-	{ Id , Length , Capacity , Freespeed , Count } = element(2, Element),
+	{ Id , Length , _ , Freespeed , Count, Lanes } = element(2, Element),
 
-	ets:insert(list_streets, {Vertices,  Id , Length , Capacity , Freespeed , Count }),
+	CellSize = 7.5, % Cell size of 7.5m according to MATSim user guide
+	StorageCapacity = math:ceil(Lanes * Length / CellSize),
+	ets:insert(list_streets, {Vertices,  Id , Length , StorageCapacity , Freespeed , Count }),
 
 	iterate_list( List ).
 

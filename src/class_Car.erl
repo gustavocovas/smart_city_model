@@ -160,16 +160,28 @@ get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->
 	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + Time );
 
 get_next_vertex( State, [ CurrentVertex | _ ], _Mode) -> 
+	LastVertex = getAttribute(State, last_vertex),
+	[ CurrentVertex | [ NextVertex | _ ] ] = getAttribute( State , path ),
+	Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
+
+	LinkData = lists:nth( 1, ets:lookup( list_streets , Edge ) ),
+	{_, _, _, Capacity, _, NumberCars} = LinkData,
+
+	CurrentTick = class_Actor:get_current_tick_offset( State ),
+	io:format("Next link capacity: ~p/~p\n", [NumberCars, Capacity]),
+	case NumberCars >= Capacity of		
+		true -> 
+			io:format("Next edge is full, trying again in 1 second...\n"),
+			executeOneway( State , addSpontaneousTick , CurrentTick + 1 );
+		_ -> ok
+	end,
+
 	% Current vertex is an atom here, but at the ets it is a string. Must convert:
 	CurrentVertexStr = lists:flatten(io_lib:format("~s", [CurrentVertex])),
 	Matches = ets:lookup(traffic_signals, CurrentVertexStr),
 
-	LastVertex = getAttribute(State, last_vertex),
-
 	case length(Matches) of
-		0 -> 
-			% io:format("No traffic signals at vertex ~p\n", [CurrentVertex]),
-			move_to_next_vertex(State);
+		0 -> move_to_next_vertex(State);
 		_ -> 	
 			{_, TrafficSignalsPid} = lists:nth(1, Matches),
 			% io:format("Traffic signal at vertex ~p has pid ~p.\n", [CurrentVertex, TrafficSignalsPid]),
