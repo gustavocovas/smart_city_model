@@ -73,12 +73,12 @@ calculate_bus_path( [ Stop | List ] , CityGraph  , Path ) ->
 			Path
 	end.	
 
-spaw_proccess( [] , _CityGraph, _TrafficModel ) -> ok;
-spaw_proccess( [ List | MoreLists ] , CityGraph, TrafficModel ) ->
+spaw_proccess( [] , _CityGraph ) -> ok;
+spaw_proccess( [ List | MoreLists ] , CityGraph ) ->
 	{ Name , ListTrips } = List,
 
-	spawn( create_agents, iterate_list , [ 1 , ListTrips , CityGraph , Name , self(), TrafficModel ]),
-	spaw_proccess( MoreLists , CityGraph, TrafficModel ).
+	spawn( create_agents, iterate_list , [ 1 , ListTrips , CityGraph , Name , self() ]),
+	spaw_proccess( MoreLists , CityGraph ).
 
 split_list( [] , _NumberLists , _ListSplit , ListReturn ) -> ListReturn;
 split_list( [ Name | Names ] , NumberLists , ListSplit , ListReturn ) ->
@@ -140,7 +140,6 @@ run() ->
 	ListBuses = bus_parser:show( element( 6 , Config ) ), % Read the list of buses. TODO: verify if this configurition does not exist.
 	ParkSpots = park_parser:read_csv( element( 7 , Config ) ), 
 	TrafficSignals = traffic_signals_parser:show( element( 8, Config ) ),
-	TrafficModel = list_to_atom( element( 10 , Config ) ),
 
 	ListEdges = create_street_list( CityGraph ),
 
@@ -175,7 +174,7 @@ run() ->
 
 	List = split_list( Names , length ( Names ) , ListCars , []  ),   
 
-	spaw_proccess( List , CityGraph, TrafficModel ),
+	spaw_proccess( List , CityGraph ),
  
 	collectResults( Names ),
 

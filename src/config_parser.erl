@@ -39,8 +39,7 @@ extract_node(#xmlElement{name=config, attributes=Attributes}) ->
 	ParkFile = children( Attributes , park_file ),
 	TrafficSignalsFile = children( Attributes , traffic_signals_file ),
 	GenerateGraph = children( Attributes , generate_graph ),
-	TrafficModel = children( Attributes , traffic_model ),
-	{ OutputFile , SimulationTime , MapFile , TripFile , MetroFile , BusFile , ParkFile , TrafficSignalsFile, GenerateGraph, TrafficModel };
+	{ OutputFile , SimulationTime , MapFile , TripFile , MetroFile , BusFile , ParkFile , TrafficSignalsFile, GenerateGraph };
 extract_node(_) -> ok.
 
 children( [Node | MoreNodes] , Type ) ->

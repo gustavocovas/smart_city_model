@@ -66,7 +66,8 @@ extract_node( Node , Multi ) ->
 					Type = children( Attributes , type ),
 					Mode = children( Attributes , mode ),
 					Park = children( Attributes , park ),
-					[ { Origin , Destination , Count , StartTime , LinkOrigin , Type , Mode , NamePerson , Park } ];
+					TrafficModel = children(Attributes, traffic_model),
+					[ { Origin , Destination , Count , StartTime , LinkOrigin , Type , Mode , NamePerson , Park, TrafficModel } ];
 
 				true ->
 

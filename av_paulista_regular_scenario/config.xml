@@ -4,7 +4,6 @@
     map_file="../av_paulista_regular_scenario/network.xml" 
     output_file="../av_paulista_regular_scenario/av_paulista_regular_scenario.events.xml" 
     traffic_signals_file="../av_paulista_regular_scenario/signals.xml"
-    traffic_model="car_following"
     randomize_start_times="false"
     simulation_time="86400"/>
 </scsimulator_config>

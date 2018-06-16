@@ -168,10 +168,10 @@ get_next_vertex( State, [ CurrentVertex | _ ], _Mode) ->
 	{_, _, _, Capacity, _, NumberCars} = LinkData,
 
 	CurrentTick = class_Actor:get_current_tick_offset( State ),
-	io:format("Next link capacity: ~p/~p\n", [NumberCars, Capacity]),
+	
 	case NumberCars >= Capacity of		
 		true -> 
-			io:format("Next edge is full, trying again in 1 second...\n"),
+			io:format("Next edge is full (~p / ~p), trying again in 1 second...\n", [NumberCars, Capacity]),
 			executeOneway( State , addSpontaneousTick , CurrentTick + 1 );
 		_ -> ok
 	end,
