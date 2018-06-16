@@ -1,182 +1,182 @@
 <scsimulator_matrix>
-<trip name="paraiso0" origin="1952545091" destination="60609874" link_origin="872" count="70" start="112" mode="car"/>
-<trip name="paraiso1" origin="1952545091" destination="60609874" link_origin="872" count="70" start="232" mode="car"/>
-<trip name="paraiso2" origin="1952545091" destination="60609874" link_origin="872" count="70" start="352" mode="car"/>
-<trip name="paraiso3" origin="1952545091" destination="60609874" link_origin="872" count="70" start="472" mode="car"/>
-<trip name="paraiso4" origin="1952545091" destination="60609874" link_origin="872" count="70" start="592" mode="car"/>
-<trip name="paraiso5" origin="1952545091" destination="60609874" link_origin="872" count="70" start="712" mode="car"/>
-<trip name="paraiso6" origin="1952545091" destination="60609874" link_origin="872" count="70" start="832" mode="car"/>
-<trip name="paraiso7" origin="1952545091" destination="60609874" link_origin="872" count="70" start="952" mode="car"/>
-<trip name="paraiso8" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1072" mode="car"/>
-<trip name="paraiso9" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1192" mode="car"/>
-<trip name="paraiso10" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1312" mode="car"/>
-<trip name="paraiso11" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1432" mode="car"/>
-<trip name="paraiso12" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1552" mode="car"/>
-<trip name="paraiso13" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1672" mode="car"/>
-<trip name="paraiso14" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1792" mode="car"/>
-<trip name="paraiso15" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1912" mode="car"/>
-<trip name="paraiso16" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2032" mode="car"/>
-<trip name="paraiso17" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2152" mode="car"/>
-<trip name="paraiso18" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2272" mode="car"/>
-<trip name="paraiso19" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2392" mode="car"/>
-<trip name="paraiso20" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2512" mode="car"/>
-<trip name="paraiso21" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2632" mode="car"/>
-<trip name="paraiso22" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2752" mode="car"/>
-<trip name="paraiso23" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2872" mode="car"/>
-<trip name="paraiso24" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2992" mode="car"/>
-<trip name="paraiso25" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3112" mode="car"/>
-<trip name="paraiso26" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3232" mode="car"/>
-<trip name="paraiso27" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3352" mode="car"/>
-<trip name="paraiso28" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3472" mode="car"/>
-<trip name="paraiso29" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3592" mode="car"/>
-<trip name="paraiso30" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3712" mode="car"/>
-<trip name="paraiso31" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3832" mode="car"/>
-<trip name="paraiso32" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3952" mode="car"/>
-<trip name="paraiso33" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4072" mode="car"/>
-<trip name="paraiso34" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4192" mode="car"/>
-<trip name="paraiso35" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4312" mode="car"/>
-<trip name="paraiso36" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4432" mode="car"/>
-<trip name="paraiso37" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4552" mode="car"/>
-<trip name="paraiso38" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4672" mode="car"/>
-<trip name="paraiso39" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4792" mode="car"/>
-<trip name="paraiso40" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4912" mode="car"/>
-<trip name="paraiso41" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5032" mode="car"/>
-<trip name="paraiso42" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5152" mode="car"/>
-<trip name="paraiso43" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5272" mode="car"/>
-<trip name="paraiso44" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5392" mode="car"/>
-<trip name="paraiso45" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5512" mode="car"/>
-<trip name="paraiso46" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5632" mode="car"/>
-<trip name="paraiso47" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5752" mode="car"/>
-<trip name="paraiso48" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5872" mode="car"/>
-<trip name="paraiso49" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5992" mode="car"/>
-<trip name="paraiso50" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6112" mode="car"/>
-<trip name="paraiso51" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6232" mode="car"/>
-<trip name="paraiso52" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6352" mode="car"/>
-<trip name="paraiso53" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6472" mode="car"/>
-<trip name="paraiso54" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6592" mode="car"/>
-<trip name="paraiso55" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6712" mode="car"/>
-<trip name="paraiso56" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6832" mode="car"/>
-<trip name="paraiso57" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6952" mode="car"/>
-<trip name="paraiso58" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7072" mode="car"/>
-<trip name="paraiso59" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7192" mode="car"/>
-<trip name="paraiso60" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7312" mode="car"/>
-<trip name="paraiso61" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7432" mode="car"/>
-<trip name="paraiso62" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7552" mode="car"/>
-<trip name="paraiso63" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7672" mode="car"/>
-<trip name="paraiso64" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7792" mode="car"/>
-<trip name="paraiso65" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7912" mode="car"/>
-<trip name="paraiso66" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8032" mode="car"/>
-<trip name="paraiso67" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8152" mode="car"/>
-<trip name="paraiso68" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8272" mode="car"/>
-<trip name="paraiso69" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8392" mode="car"/>
-<trip name="paraiso70" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8512" mode="car"/>
-<trip name="paraiso71" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8632" mode="car"/>
-<trip name="paraiso72" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8752" mode="car"/>
-<trip name="paraiso73" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8872" mode="car"/>
-<trip name="paraiso74" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8992" mode="car"/>
-<trip name="paraiso75" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9112" mode="car"/>
-<trip name="paraiso76" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9232" mode="car"/>
-<trip name="paraiso77" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9352" mode="car"/>
-<trip name="paraiso78" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9472" mode="car"/>
-<trip name="paraiso79" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9592" mode="car"/>
-<trip name="paraiso80" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9712" mode="car"/>
-<trip name="paraiso81" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9832" mode="car"/>
-<trip name="paraiso82" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9952" mode="car"/>
-<trip name="paraiso83" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10072" mode="car"/>
-<trip name="paraiso84" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10192" mode="car"/>
-<trip name="paraiso85" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10312" mode="car"/>
-<trip name="paraiso86" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10432" mode="car"/>
-<trip name="paraiso87" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10552" mode="car"/>
-<trip name="paraiso88" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10672" mode="car"/>
-<trip name="paraiso89" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10792" mode="car"/>
-<trip name="consolacao0" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="115" mode="car"/>
-<trip name="consolacao1" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="235" mode="car"/>
-<trip name="consolacao2" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="355" mode="car"/>
-<trip name="consolacao3" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="475" mode="car"/>
-<trip name="consolacao4" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="595" mode="car"/>
-<trip name="consolacao5" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="715" mode="car"/>
-<trip name="consolacao6" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="835" mode="car"/>
-<trip name="consolacao7" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="955" mode="car"/>
-<trip name="consolacao8" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1075" mode="car"/>
-<trip name="consolacao9" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1195" mode="car"/>
-<trip name="consolacao10" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1315" mode="car"/>
-<trip name="consolacao11" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1435" mode="car"/>
-<trip name="consolacao12" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1555" mode="car"/>
-<trip name="consolacao13" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1675" mode="car"/>
-<trip name="consolacao14" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1795" mode="car"/>
-<trip name="consolacao15" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1915" mode="car"/>
-<trip name="consolacao16" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2035" mode="car"/>
-<trip name="consolacao17" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2155" mode="car"/>
-<trip name="consolacao18" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2275" mode="car"/>
-<trip name="consolacao19" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2395" mode="car"/>
-<trip name="consolacao20" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2515" mode="car"/>
-<trip name="consolacao21" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2635" mode="car"/>
-<trip name="consolacao22" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2755" mode="car"/>
-<trip name="consolacao23" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2875" mode="car"/>
-<trip name="consolacao24" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2995" mode="car"/>
-<trip name="consolacao25" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3115" mode="car"/>
-<trip name="consolacao26" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3235" mode="car"/>
-<trip name="consolacao27" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3355" mode="car"/>
-<trip name="consolacao28" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3475" mode="car"/>
-<trip name="consolacao29" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3595" mode="car"/>
-<trip name="consolacao30" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3715" mode="car"/>
-<trip name="consolacao31" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3835" mode="car"/>
-<trip name="consolacao32" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3955" mode="car"/>
-<trip name="consolacao33" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4075" mode="car"/>
-<trip name="consolacao34" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4195" mode="car"/>
-<trip name="consolacao35" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4315" mode="car"/>
-<trip name="consolacao36" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4435" mode="car"/>
-<trip name="consolacao37" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4555" mode="car"/>
-<trip name="consolacao38" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4675" mode="car"/>
-<trip name="consolacao39" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4795" mode="car"/>
-<trip name="consolacao40" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4915" mode="car"/>
-<trip name="consolacao41" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5035" mode="car"/>
-<trip name="consolacao42" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5155" mode="car"/>
-<trip name="consolacao43" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5275" mode="car"/>
-<trip name="consolacao44" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5395" mode="car"/>
-<trip name="consolacao45" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5515" mode="car"/>
-<trip name="consolacao46" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5635" mode="car"/>
-<trip name="consolacao47" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5755" mode="car"/>
-<trip name="consolacao48" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5875" mode="car"/>
-<trip name="consolacao49" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5995" mode="car"/>
-<trip name="consolacao50" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6115" mode="car"/>
-<trip name="consolacao51" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6235" mode="car"/>
-<trip name="consolacao52" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6355" mode="car"/>
-<trip name="consolacao53" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6475" mode="car"/>
-<trip name="consolacao54" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6595" mode="car"/>
-<trip name="consolacao55" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6715" mode="car"/>
-<trip name="consolacao56" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6835" mode="car"/>
-<trip name="consolacao57" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6955" mode="car"/>
-<trip name="consolacao58" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7075" mode="car"/>
-<trip name="consolacao59" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7195" mode="car"/>
-<trip name="consolacao60" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7315" mode="car"/>
-<trip name="consolacao61" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7435" mode="car"/>
-<trip name="consolacao62" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7555" mode="car"/>
-<trip name="consolacao63" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7675" mode="car"/>
-<trip name="consolacao64" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7795" mode="car"/>
-<trip name="consolacao65" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7915" mode="car"/>
-<trip name="consolacao66" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8035" mode="car"/>
-<trip name="consolacao67" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8155" mode="car"/>
-<trip name="consolacao68" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8275" mode="car"/>
-<trip name="consolacao69" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8395" mode="car"/>
-<trip name="consolacao70" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8515" mode="car"/>
-<trip name="consolacao71" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8635" mode="car"/>
-<trip name="consolacao72" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8755" mode="car"/>
-<trip name="consolacao73" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8875" mode="car"/>
-<trip name="consolacao74" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8995" mode="car"/>
-<trip name="consolacao75" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9115" mode="car"/>
-<trip name="consolacao76" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9235" mode="car"/>
-<trip name="consolacao77" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9355" mode="car"/>
-<trip name="consolacao78" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9475" mode="car"/>
-<trip name="consolacao79" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9595" mode="car"/>
-<trip name="consolacao80" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9715" mode="car"/>
-<trip name="consolacao81" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9835" mode="car"/>
-<trip name="consolacao82" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9955" mode="car"/>
-<trip name="consolacao83" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10075" mode="car"/>
-<trip name="consolacao84" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10195" mode="car"/>
-<trip name="consolacao85" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10315" mode="car"/>
-<trip name="consolacao86" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10435" mode="car"/>
-<trip name="consolacao87" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10555" mode="car"/>
-<trip name="consolacao88" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10675" mode="car"/>
-<trip name="consolacao89" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10795" mode="car"/>
+<trip name="paraiso0" origin="1952545091" destination="60609874" link_origin="872" count="70" start="112" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso1" origin="1952545091" destination="60609874" link_origin="872" count="70" start="232" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso2" origin="1952545091" destination="60609874" link_origin="872" count="70" start="352" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso3" origin="1952545091" destination="60609874" link_origin="872" count="70" start="472" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso4" origin="1952545091" destination="60609874" link_origin="872" count="70" start="592" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso5" origin="1952545091" destination="60609874" link_origin="872" count="70" start="712" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso6" origin="1952545091" destination="60609874" link_origin="872" count="70" start="832" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso7" origin="1952545091" destination="60609874" link_origin="872" count="70" start="952" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso8" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1072" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso9" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1192" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso10" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1312" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso11" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1432" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso12" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1552" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso13" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1672" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso14" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1792" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso15" origin="1952545091" destination="60609874" link_origin="872" count="70" start="1912" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso16" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2032" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso17" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2152" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso18" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2272" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso19" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2392" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso20" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2512" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso21" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2632" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso22" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2752" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso23" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2872" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso24" origin="1952545091" destination="60609874" link_origin="872" count="70" start="2992" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso25" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3112" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso26" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3232" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso27" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3352" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso28" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3472" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso29" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3592" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso30" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3712" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso31" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3832" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso32" origin="1952545091" destination="60609874" link_origin="872" count="70" start="3952" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso33" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4072" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso34" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4192" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso35" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4312" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso36" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4432" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso37" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4552" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso38" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4672" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso39" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4792" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso40" origin="1952545091" destination="60609874" link_origin="872" count="70" start="4912" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso41" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5032" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso42" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5152" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso43" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5272" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso44" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5392" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso45" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5512" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso46" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5632" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso47" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5752" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso48" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5872" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso49" origin="1952545091" destination="60609874" link_origin="872" count="70" start="5992" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso50" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6112" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso51" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6232" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso52" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6352" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso53" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6472" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso54" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6592" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso55" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6712" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso56" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6832" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso57" origin="1952545091" destination="60609874" link_origin="872" count="70" start="6952" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso58" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7072" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso59" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7192" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso60" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7312" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso61" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7432" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso62" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7552" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso63" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7672" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso64" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7792" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso65" origin="1952545091" destination="60609874" link_origin="872" count="70" start="7912" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso66" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8032" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso67" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8152" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso68" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8272" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso69" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8392" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso70" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8512" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso71" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8632" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso72" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8752" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso73" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8872" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso74" origin="1952545091" destination="60609874" link_origin="872" count="70" start="8992" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso75" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9112" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso76" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9232" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso77" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9352" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso78" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9472" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso79" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9592" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso80" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9712" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso81" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9832" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso82" origin="1952545091" destination="60609874" link_origin="872" count="70" start="9952" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso83" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10072" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso84" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10192" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso85" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10312" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso86" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10432" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso87" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10552" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso88" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10672" mode="car" traffic_model="freespeed"/>
+<trip name="paraiso89" origin="1952545091" destination="60609874" link_origin="872" count="70" start="10792" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao0" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="115" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao1" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="235" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao2" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="355" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao3" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="475" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao4" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="595" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao5" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="715" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao6" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="835" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao7" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="955" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao8" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1075" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao9" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1195" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao10" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1315" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao11" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1435" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao12" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1555" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao13" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1675" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao14" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1795" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao15" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="1915" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao16" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2035" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao17" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2155" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao18" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2275" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao19" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2395" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao20" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2515" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao21" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2635" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao22" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2755" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao23" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2875" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao24" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="2995" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao25" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3115" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao26" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3235" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao27" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3355" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao28" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3475" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao29" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3595" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao30" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3715" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao31" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3835" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao32" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="3955" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao33" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4075" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao34" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4195" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao35" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4315" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao36" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4435" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao37" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4555" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao38" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4675" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao39" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4795" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao40" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="4915" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao41" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5035" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao42" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5155" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao43" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5275" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao44" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5395" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao45" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5515" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao46" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5635" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao47" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5755" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao48" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5875" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao49" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="5995" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao50" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6115" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao51" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6235" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao52" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6355" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao53" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6475" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao54" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6595" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao55" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6715" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao56" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6835" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao57" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="6955" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao58" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7075" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao59" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7195" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao60" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7315" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao61" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7435" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao62" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7555" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao63" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7675" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao64" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7795" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao65" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="7915" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao66" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8035" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao67" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8155" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao68" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8275" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao69" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8395" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao70" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8515" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao71" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8635" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao72" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8755" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao73" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8875" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao74" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="8995" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao75" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9115" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao76" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9235" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao77" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9355" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao78" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9475" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao79" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9595" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao80" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9715" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao81" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9835" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao82" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="9955" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao83" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10075" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao84" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10195" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao85" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10315" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao86" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10435" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao87" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10555" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao88" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10675" mode="car" traffic_model="freespeed"/>
+<trip name="consolacao89" origin="60609819" destination="1421376041" link_origin="1425" count="70" start="10795" mode="car" traffic_model="freespeed"/>
 </scsimulator_matrix>
