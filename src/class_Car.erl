@@ -165,13 +165,19 @@ get_next_vertex( State, [ CurrentVertex | _ ], _Mode) ->
 	Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
 
 	LinkData = lists:nth( 1, ets:lookup( list_streets , Edge ) ),
-	{_, _, _, Capacity, _, NumberCars} = LinkData,
+	{_, _, _, StorageCapacity, _, NumberCars} = LinkData,
 
 	CurrentTick = class_Actor:get_current_tick_offset( State ),
 	
-	case NumberCars >= Capacity of		
+	DigitalRailsFactor = 1/3,
+	CapacityFactor = case getAttribute(State, traffic_model) of
+		freespeed -> DigitalRailsFactor;
+		car_following -> 1 - DigitalRailsFactor
+	end,
+
+	case NumberCars >= CapacityFactor * StorageCapacity of		
 		true -> 
-			io:format("Next edge is full (~p / ~p), trying again in 1 second...\n", [NumberCars, Capacity]),
+			io:format("Next edge is full (~p / ~p), trying again in 1 second...\n", [NumberCars, StorageCapacity]),
 			executeOneway( State , addSpontaneousTick , CurrentTick + 1 );
 		_ -> ok
 	end,
