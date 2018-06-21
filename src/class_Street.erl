@@ -94,7 +94,9 @@ iterate_list([ Element | List ]) ->
 	Vertices = element( 1, Element),
 	{ Id , Length , _ , Freespeed , Count, Lanes } = element(2, Element),
 
-	CellSize = 7.5, % Cell size of 7.5m according to MATSim user guide
+	% CellSize = 7.5, % Cell size of 7.5m according to MATSim user guide
+	CellSize = 5.5,   % But 5.5 seems to be a better value under saturated conditions
+
 	StorageCapacity = math:ceil(Lanes * Length / CellSize),
 	ets:insert(list_streets, {Vertices,  Id , Length , StorageCapacity , Freespeed , Count }),
 

@@ -35,6 +35,15 @@ construct( State, ?wooper_construct_parameters ) ->
 	InitialTrip = lists:nth( 1 , ListTripsFinal ),	
 	Path = element( 2 , InitialTrip ),
 
+	% Change this factor when changing between scenarios
+	DigitalRailsFactor = 0,
+	% %%% %%%
+
+	CapacityFactor = case TrafficModel of
+		freespeed -> DigitalRailsFactor;
+		car_following -> 1 - DigitalRailsFactor
+	end,
+
 	NewState = setAttributes( ActorState, [
 		{ car_name, CarName },
 		{ trips , ListTripsFinal },
@@ -46,8 +55,8 @@ construct( State, ?wooper_construct_parameters ) ->
 		{ mode , Mode },
 		{ last_vertex , ok },
 		{ last_vertex_pid , ok },
-		{ traffic_model, TrafficModel}
-						] ),
+		{ traffic_model, TrafficModel},
+		{capacity_factor, CapacityFactor}] ),
 
 	case Park of
 		ok ->
@@ -169,12 +178,7 @@ get_next_vertex( State, [ CurrentVertex | _ ], _Mode) ->
 
 	CurrentTick = class_Actor:get_current_tick_offset( State ),
 	
-	DigitalRailsFactor = 1/3,
-	CapacityFactor = case getAttribute(State, traffic_model) of
-		freespeed -> DigitalRailsFactor;
-		car_following -> 1 - DigitalRailsFactor
-	end,
-
+	CapacityFactor = getAttribute(State, capacity_factor),
 	case NumberCars >= CapacityFactor * StorageCapacity of		
 		true -> 
 			io:format("Next edge is full (~p / ~p), trying again in 1 second...\n", [NumberCars, StorageCapacity]),
@@ -198,16 +202,21 @@ move_to_next_vertex( State ) ->
 	[ CurrentVertex | [ NextVertex | Path ] ] = getAttribute( State , path ),
 	Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
 	
-	DecrementVertex = getAttribute( State , last_vertex_pid ),
-	case DecrementVertex of
-		ok -> ok;
-		_ -> ets:update_counter( list_streets, DecrementVertex , { 6 , -1 })
-	end,	
-
-	ets:update_counter( list_streets , Edge , { 6 , 1 }),
+	case getAttribute(State, traffic_model) of
+		% If traffic_model is car_following (i.e., we are not at Digital Rails), update counters
+		car_following -> 
+			DecrementVertex = getAttribute( State , last_vertex_pid ),
+			case DecrementVertex of
+				ok -> ok;
+				_ -> ets:update_counter( list_streets, DecrementVertex , { 6 , -1 })
+			end,	
+			ets:update_counter( list_streets , Edge , { 6 , 1 });
+		_ -> ok
+	end,
+	
 	Data = lists:nth( 1, ets:lookup( list_streets , Edge ) ),
 
-	{ Id , Time , Distance } = traffic_models:get_speed_car(Data, getAttribute(State, traffic_model)),
+	{ Id , Time , Distance } = traffic_models:get_speed_car(Data, getAttribute(State, traffic_model), getAttribute(State, capacity_factor)),
 
 	TotalLength = getAttribute( State , distance ) + Distance,
 	StateAfterMovement = setAttributes( State , [
@@ -223,11 +232,11 @@ move_to_next_vertex( State ) ->
 receive_signal_state( State , {Color, TicksUntilNextColor}, _TrafficLightPid ) -> 
 	case Color of
 		red -> 
-			io:format("Traffic signal is red, will be green in ~p\n", [TicksUntilNextColor]),
+			% io:format("Traffic signal is red, will be green in ~p\n", [TicksUntilNextColor]),
 			% Act spontaneously when the traffic light is green again...
 			executeOneway( State , addSpontaneousTick , class_Actor:get_current_tick_offset( State ) + TicksUntilNextColor );
 		green -> 
-			io:format("Traffic signal is green, continuing movement...\n"),
+			% io:format("Traffic signal is green, continuing movement...\n"),
 			move_to_next_vertex(State)
 	end.
 
