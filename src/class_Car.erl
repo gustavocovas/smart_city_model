@@ -181,8 +181,9 @@ get_next_vertex( State, [ CurrentVertex | _ ], _Mode) ->
 	CapacityFactor = getAttribute(State, capacity_factor),
 	case NumberCars >= CapacityFactor * StorageCapacity of		
 		true -> 
-			io:format("Next edge is full (~p / ~p), trying again in 1 second...\n", [NumberCars, StorageCapacity]),
+			% io:format("edge-full: ~p|~p\n", [NumberCars, StorageCapacity]),
 			executeOneway( State , addSpontaneousTick , CurrentTick + 1 );
+		% _ -> io:format("edge-ok: ~p|~p\n", [NumberCars, StorageCapacity])
 		_ -> ok
 	end,
 
@@ -222,8 +223,8 @@ move_to_next_vertex( State ) ->
 	StateAfterMovement = setAttributes( State , [
 		{distance , TotalLength} , {car_position , Id} , {last_vertex, CurrentVertex}, {last_vertex_pid , Edge} , {path , [NextVertex | Path]}] ), 
 
-	io:format('Tick: ~p; ~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n', 
-		[class_Actor:get_current_tick_offset( State ), CurrentVertex, NextVertex, Distance, Time, Distance / Time, class_Actor:get_current_tick_offset( StateAfterMovement ) + Time]),
+	% io:format('Tick: ~p; ~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n', 
+	% 	[class_Actor:get_current_tick_offset( State ), CurrentVertex, NextVertex, Distance, Time, Distance / Time, class_Actor:get_current_tick_offset( StateAfterMovement ) + Time]),
 
 	print_movement(State, StateAfterMovement),
 	executeOneway( StateAfterMovement , addSpontaneousTick , class_Actor:get_current_tick_offset( StateAfterMovement ) + Time ).
