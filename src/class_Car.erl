@@ -36,7 +36,7 @@ construct( State, ?wooper_construct_parameters ) ->
 	Path = element( 2 , InitialTrip ),
 
 	% Change this factor when changing between scenarios
-	DigitalRailsFactor = 0,
+	DigitalRailsFactor = 1/3,
 	% %%% %%%
 
 	CapacityFactor = case TrafficModel of
