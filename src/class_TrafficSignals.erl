@@ -45,7 +45,7 @@ construct( State, ?wooper_construct_parameters ) ->
 	PhaseMap = buildPhaseMap(Phases),
 	
 	ActorState = class_Actor:construct( State , ActorSettings , ActorName ),
-	setAttributes( ActorState , [{cycle_duration, CycleDuration}, {offset, Offset}, {phase_map, PhaseMap}] ).
+	setAttributes( ActorState , [{name, ActorName}, {cycle_duration, CycleDuration}, {offset, Offset}, {phase_map, PhaseMap}] ).
 
 % Overridden destructor.
 %

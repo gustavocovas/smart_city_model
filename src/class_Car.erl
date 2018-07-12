@@ -223,8 +223,8 @@ move_to_next_vertex( State ) ->
 	StateAfterMovement = setAttributes( State , [
 		{distance , TotalLength} , {car_position , Id} , {last_vertex, CurrentVertex}, {last_vertex_pid , Edge} , {path , [NextVertex | Path]}] ), 
 
-	% io:format('Tick: ~p; ~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n', 
-	% 	[class_Actor:get_current_tick_offset( State ), CurrentVertex, NextVertex, Distance, Time, Distance / Time, class_Actor:get_current_tick_offset( StateAfterMovement ) + Time]),
+	% io:format('~p Tick: ~p; ~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n', 
+	% 	[getAttribute( State , car_name ), class_Actor:get_current_tick_offset( State ), CurrentVertex, NextVertex, Distance, Time, Distance / Time, class_Actor:get_current_tick_offset( StateAfterMovement ) + Time]),
 
 	print_movement(State, StateAfterMovement),
 	executeOneway( StateAfterMovement , addSpontaneousTick , class_Actor:get_current_tick_offset( StateAfterMovement ) + Time ).
@@ -233,7 +233,7 @@ move_to_next_vertex( State ) ->
 receive_signal_state( State , {Color, TicksUntilNextColor}, _TrafficLightPid ) -> 
 	case Color of
 		red -> 
-			% io:format("Traffic signal is red, will be green in ~p\n", [TicksUntilNextColor]),
+			% io:format("[~p] red (green in ~p)\n", [TrafficLightPid, TicksUntilNextColor]),
 			% Act spontaneously when the traffic light is green again...
 			executeOneway( State , addSpontaneousTick , class_Actor:get_current_tick_offset( State ) + TicksUntilNextColor );
 		green -> 
