@@ -1,8 +1,0 @@
-<scsimulator_config>
-  <config 
-    trip_file="../peak_dr-algo_1_50/trips.xml" 
-    map_file="../peak_dr-algo_1_50/network.xml" 
-    output_file="../peak_dr-algo_1_50/events.xml" 
-    traffic_signals_file="../peak_dr-algo_1_50/signals.xml"
-    simulation_time="86400"/>
-</scsimulator_config>
