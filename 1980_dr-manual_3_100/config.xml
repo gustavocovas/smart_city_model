@@ -1,8 +1,0 @@
-<scsimulator_config>
-  <config 
-    trip_file="../1980_dr-manual_3_100/trips.xml" 
-    map_file="../1980_dr-manual_3_100/network.xml" 
-    output_file="../1980_dr-manual_3_100/events.xml" 
-    traffic_signals_file="../1980_dr-manual_3_100/signals.xml"
-    simulation_time="86400"/>
-</scsimulator_config>
