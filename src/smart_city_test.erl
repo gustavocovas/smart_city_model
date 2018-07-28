@@ -101,7 +101,7 @@ collectResults( ListNames ) ->
 readConfigPath() ->
 	{ok, Device} = file:open('../interscsimulator.conf', [read]),
 	{ok, Data} = file:read_line(Device),
-	string:chomp(Data).
+	filename:join(os:getenv("INTERSCSIMULATOR_PATH"), string:chomp(Data)).
 
 -spec run() -> no_return().
 run() ->	
@@ -132,14 +132,15 @@ run() ->
 	DeploymentManagerPid = sim_diasca:init( SimulationSettings, DeploymentSettings, LoadBalancingSettings ),
 
 	ConfigPath = readConfigPath(),
+
 	Config = config_parser:show( ConfigPath ),
 
-	ListCars = trip_parser:show( element( 4 , Config ) ), % Read the cars from the trips.xml file
-	CityGraph = map_parser:show( element( 3 , Config ) , false ), % Read the map from the map.xml file
-	MetroFile = element( 5 , Config ), % Read the metro graph from the city. TODO: verify if this configurition does not exist.
-	ListBuses = bus_parser:show( element( 6 , Config ) ), % Read the list of buses. TODO: verify if this configurition does not exist.
-	ParkSpots = park_parser:read_csv( element( 7 , Config ) ), 
-	TrafficSignals = traffic_signals_parser:show( element( 8, Config ) ),
+	ListCars = trip_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(4, Config))),
+	CityGraph = map_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(3, Config)), false),
+	MetroFile = filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(5, Config)), 
+	ListBuses = bus_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(6, Config))), 
+	ParkSpots = park_parser:read_csv(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(7, Config))), 
+	TrafficSignals = traffic_signals_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(8, Config ))),
 
 	ListEdges = create_street_list( CityGraph ),
 
