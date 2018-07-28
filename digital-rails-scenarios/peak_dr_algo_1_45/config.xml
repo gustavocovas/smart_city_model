@@ -1,9 +1,0 @@
-
-<scsimulator_config>
-  <config 
-    trip_file="../digital-rails-scenarios/peak_dr_algo_1_45/trips.xml" 
-    map_file="../digital-rails-scenarios/network.xml" 
-    output_file="../digital-rails-scenarios/peak_dr_algo_1_45/events.xml" 
-    traffic_signals_file="../digital-rails-scenarios/signals.xml"
-    simulation_time="86400"/>
-</scsimulator_config>
