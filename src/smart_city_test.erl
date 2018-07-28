@@ -148,7 +148,8 @@ run() ->
 	OutputPath = string:concat( Pwd, "/" ),
 	AmqpClientPath = string:concat( Pwd, "/../deps/amqp_client"),
 
-	LogName = string:concat( OutputPath, element( 1 , Config ) ),
+	LogName = filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(1, Config)),
+	
 	Paths = [ AmqpClientPath,
 		string:concat( AmqpClientPath, "/ebin" ),
 		string:concat( AmqpClientPath, "/include/rabbit_common/ebin" )
