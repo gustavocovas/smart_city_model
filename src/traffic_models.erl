@@ -10,8 +10,8 @@ get_speed_car(LinkData, car_following, CapacityFactor) ->
 	Speed = case NumberCars > MinimumDensity of
 		true ->
 			case NumberCars >= Capacity of
-				true -> 0.8;
-				false -> Freespeed * math:pow(1 - (NumberCars / Capacity), 0.05)
+				true -> 1.0;
+				false -> Freespeed * math:pow(1 - (NumberCars / Capacity), 0.45)
 			end;
 		false -> Freespeed
 	end,

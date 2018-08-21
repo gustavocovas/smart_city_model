@@ -107,22 +107,17 @@ readConfigPath() ->
 run() ->	
 	?test_start,
 	
-	% Use default simulation settings (50Hz, batch reproducible):
 	SimulationSettings = #simulation_settings{
 		simulation_name = "Sim-Diasca Smart City Integration Test",
-		tick_duration = 1
-		% We leave it to the default specification (all_outputs):
-		% result_specification =
-		%  [ { targeted_patterns, [ {".*",[data_and_plot]} ] },
-		%    { blacklisted_patterns, ["^Second" ] } ]
-
-		%result_specification = [ { targeted_patterns, [ {".*",data_only} ] } ]
+		tick_duration = 1,
+		result_specification = no_output
 	},
 
 	DeploymentSettings = #deployment_settings{
-		computing_hosts = { use_host_file_otherwise_local, "sim-diasca-host-candidates.txt" },
+		computing_hosts = localhost_only,
 		additional_elements_to_deploy = [ { ".", code } ],
-		enable_performance_tracker = false
+		enable_performance_tracker = false,
+		enable_data_logger = false
 	},
 
 	% Default load balancing settings (round-robin placement heuristic):
@@ -149,7 +144,7 @@ run() ->
 	AmqpClientPath = string:concat( Pwd, "/../deps/amqp_client"),
 
 	LogName = filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(1, Config)),
-	
+
 	Paths = [ AmqpClientPath,
 		string:concat( AmqpClientPath, "/ebin" ),
 		string:concat( AmqpClientPath, "/include/rabbit_common/ebin" )
@@ -188,13 +183,13 @@ run() ->
 	DeploymentManagerPid ! { getRootTimeManager, [], self() },
 	RootTimeManagerPid = test_receive(),
 
-	?test_info_fmt( "Starting simulation, for a stop after a duration "
-					"in virtual time of ~Bms.", [ SimulationDuration ] ),
+	% ?test_info_fmt( "Starting simulation, for a stop after a duration "
+	% 				"in virtual time of ~Bms.", [ SimulationDuration ] ),
 
 	RootTimeManagerPid ! { startFor, [ SimulationDuration, self() ] },
 
-	?test_info( "Waiting for the simulation to end, "
-				"since having been declared as a simulation listener." ),
+	% ?test_info( "Waiting for the simulation to end, "
+	% 			"since having been declared as a simulation listener." ),
 
 	receive
 		simulation_stopped ->
@@ -203,7 +198,7 @@ run() ->
 
 	end,
 
-	?test_info( "Browsing the report results, if in batch mode." ),
-	class_ResultManager:browse_reports(),
+	% ?test_info( "Browsing the report results, if in batch mode." ),
+	% class_ResultManager:browse_reports(),
 
 	?test_stop.

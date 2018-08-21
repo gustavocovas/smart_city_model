@@ -1,8 +1,11 @@
 #!/bin/bash
 
-for scenario in `ls -d ../digital-rails-scenarios/*/`;
+for scenario in `ls -d ~/interscsimulator/scenarios/digital-rails-av-paulista/*/`;
 do
   echo Filtering $scenario events
-  cat $scenario"events.xml" | grep -E "xml|events|arrival" > $scenario"arrivals.xml"
+  for r in `seq 0 9`;
+  do
+    cat $scenario"events"$r".xml" | grep -E "xml|events|arrival" > $scenario"arrivals"$r".xml"
+  done
 done
 

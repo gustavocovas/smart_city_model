@@ -22,6 +22,7 @@ write_final_message( _Type , TotalLength , StartTime , CarId , CurrentTickOffset
 
 	Arrival = io_lib:format( "~w;~w;~w;arrival;~s;~s;~w;~w\n", [ Hour , Minute , CurrentTickOffset , CarId ,  LastPosition, TotalTime , TotalLength ] ),
 
+	io:format(Arrival),
 	file_utils:write( ets:lookup_element(options, log_file, 2 ), Arrival );
 
 
