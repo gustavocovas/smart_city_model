@@ -42,12 +42,12 @@ random_element(List) -> lists:nth(rand:uniform(length(List)), List).
 digital_rails_random_walk(_Graph, Origin, _UsedDigitalRails, _RestrictedLinks, 0) ->
 	[Origin];
 
-digital_rails_random_walk(Graph, Origin, UsedDigitalRails, _RestrictedLinks, RemainingLinks) ->
-	OutboundEdges = lists:map(fun(E) -> digraph:edge(Graph, E) end, digraph:out_edges(Graph, Origin)),
-	% TODO: filter restricted outbound edges based on restricted links
+digital_rails_random_walk(Graph, Origin, UsedDigitalRails, RestrictedLinks, RemainingLinks) ->
+	AllOutboundEdges = lists:map(fun(E) -> digraph:edge(Graph, E) end, digraph:out_edges(Graph, Origin)),
+	AllowedOutboundEdges = lists:filter(fun (E) -> not lists:member(element(1, element(4, E)), RestrictedLinks) end, AllOutboundEdges),
 
-	DigitalRailsOutboundEdges = lists:filter(fun (E) -> is_edge_digital_rail(E) end, OutboundEdges),
-	RegularOutboundEdges = lists:filter(fun (E) -> not is_edge_digital_rail(E) end, OutboundEdges),
+	DigitalRailsOutboundEdges = lists:filter(fun (E) -> is_edge_digital_rail(E) end, AllowedOutboundEdges),
+	RegularOutboundEdges = lists:filter(fun (E) -> not is_edge_digital_rail(E) end, AllowedOutboundEdges),
 
 	case length(DigitalRailsOutboundEdges) == 0 of
 		true -> 
