@@ -27,7 +27,7 @@ create_person( Car , Graph ) ->
 	end,
 
 	NewPath = case Destination of 
-		"random_walk" -> digital_rails_random_walk(Graph, list_to_atom(Origin), false, 5);
+		"random_walk" -> digital_rails_random_walk(Graph, list_to_atom(Origin), false, [], 5);
 		_ -> digraph:get_short_path( Graph , list_to_atom(Origin) , list_to_atom(Destination) )
 	end,
 
@@ -37,51 +37,53 @@ create_person( Car , Graph ) ->
 
 	{ StartTime , [ { NameFile , ListTripsFinal , Type , Park , ModeFinal , element (1 , string:to_integer(CarCount)), list_to_atom(TrafficModel) } ] }.
 
-digital_rails_random_walk(_Graph, Origin, _UsedDigitalRails, 0) ->
+random_element(List) -> lists:nth(rand:uniform(length(List)), List).
+
+digital_rails_random_walk(_Graph, Origin, _UsedDigitalRails, _RestrictedLinks, 0) ->
 	[Origin];
 
-digital_rails_random_walk(Graph, Origin, UsedDigitalRails, RemainingLinks) ->
-	Neighbours = digraph:out_neighbours(Graph, Origin),
-	OutboundEdges = lists:map(fun(Neighbour) -> {Origin, Neighbour} end, Neighbours),
-
-	% io:format("Outbound edges are: ~p ~n", [OutboundEdges]),
+digital_rails_random_walk(Graph, Origin, UsedDigitalRails, _RestrictedLinks, RemainingLinks) ->
+	OutboundEdges = lists:map(fun(E) -> digraph:edge(Graph, E) end, digraph:out_edges(Graph, Origin)),
+	% TODO: filter restricted outbound edges based on restricted links
 
 	DigitalRailsOutboundEdges = lists:filter(fun (E) -> is_edge_digital_rail(E) end, OutboundEdges),
 	RegularOutboundEdges = lists:filter(fun (E) -> not is_edge_digital_rail(E) end, OutboundEdges),
 
 	case length(DigitalRailsOutboundEdges) == 0 of
 		true -> 
-			{_, Destination} = lists:nth(rand:uniform(length(RegularOutboundEdges)), RegularOutboundEdges),
+			{_, _, Destination, {_, _, _, _, _, RestrictedNextLinks}} = random_element(RegularOutboundEdges),
 			case UsedDigitalRails of
 				true ->
 					% io:format("No outbound Digital rails and already used DR, ending trip (~p) ~n", [RegularOutboundEdges]),
 					[Origin, Destination];
 				false ->
 					% io:format("No outbound Digital rails and have not used DR (~p) ~n", [RegularOutboundEdges]),
-					[Origin] ++ digital_rails_random_walk(Graph, Destination, false, RemainingLinks - 1)
+					[Origin] ++ digital_rails_random_walk(Graph, Destination, false, RestrictedNextLinks, RemainingLinks - 1)
 				end;
 		false -> 
 			case length(RegularOutboundEdges) == 0 of
 				true -> 
 					% io:format("No choice but to stay in digital rails (~p) ~n", DigitalRailsOutboundEdges),
-					{_, Destination} = lists:nth(1, DigitalRailsOutboundEdges),
-					[Origin] ++ digital_rails_random_walk(Graph, Destination, true, RemainingLinks);
+					{_, _, Destination, {_, _, _, _, _, RestrictedNextLinks}} = lists:nth(1, DigitalRailsOutboundEdges),
+					[Origin] ++ digital_rails_random_walk(Graph, Destination, true, RestrictedNextLinks, RemainingLinks);
 				false -> 
 					case rand:uniform() < 0.75 of
 						true -> 
 							% io:format("Remaining in digital rails (~p) ~n", DigitalRailsOutboundEdges),
-							{_, Destination} = lists:nth(1, DigitalRailsOutboundEdges),
-							[Origin] ++ digital_rails_random_walk(Graph, Destination, true, RemainingLinks);
+							{_, _, Destination, {_, _, _, _, _, RestrictedNextLinks}} = lists:nth(1, DigitalRailsOutboundEdges),
+							[Origin] ++ digital_rails_random_walk(Graph, Destination, true, RestrictedNextLinks, RemainingLinks);
 						false -> 
 							% io:format("Leaving digital rails and ending trip (~p) ~n", [RegularOutboundEdges]),
-							{_, Destination} = lists:nth(rand:uniform(length(RegularOutboundEdges)), RegularOutboundEdges),
+							{_, _, Destination, _} = random_element(RegularOutboundEdges),
 							[Origin, Destination]
 					end
 			end
 	end.
 	
 is_edge_digital_rail(Edge) ->
-	case Edge of 
+	{_, Origin, Destination, _} = Edge,
+	OD = {Origin, Destination},
+	case OD of 
 		% Paraíso DR:
 		{'1952545091', '5381067434'} -> true; 
 		{'5381067434', '2098758071'} -> true; 
