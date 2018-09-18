@@ -4,7 +4,7 @@
 -define( wooper_superclasses, [ class_Actor ] ).
 
 % parameters taken by the constructor ('construct').
--define( wooper_construct_parameters, ActorSettings, CarName , ListTripsFinal , StartTime , Type , Park , Mode, TrafficModel ).
+-define( wooper_construct_parameters, ActorSettings, CarName , ListTripsFinal , StartTime , Type , Park , Mode, DigitalRailsCapable ).
 
 % Declaring all variations of WOOPER-defined standard life-cycle operations:
 % (template pasted, just two replacements performed to update arities)
@@ -35,15 +35,6 @@ construct( State, ?wooper_construct_parameters ) ->
 	InitialTrip = lists:nth( 1 , ListTripsFinal ),	
 	Path = element( 2 , InitialTrip ),
 
-	% Change this factor when changing between scenarios
-	DigitalRailsFactor = 0/3,
-	% %%% %%%
-
-	CapacityFactor = case TrafficModel of
-		freespeed -> DigitalRailsFactor;
-		car_following -> 1 - DigitalRailsFactor
-	end,
-
 	NewState = setAttributes( ActorState, [
 		{ car_name, CarName },
 		{ trips , ListTripsFinal },
@@ -55,8 +46,8 @@ construct( State, ?wooper_construct_parameters ) ->
 		{ mode , Mode },
 		{ last_vertex , ok },
 		{ last_vertex_pid , ok },
-		{ traffic_model, TrafficModel},
-		{capacity_factor, CapacityFactor}] ),
+		{ digital_rails_capable, DigitalRailsCapable}] 
+	),
 
 	case Park of
 		ok ->
@@ -170,23 +161,15 @@ get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->
 
 get_next_vertex( State, [ CurrentVertex | _ ], _Mode) -> 
 	LastVertex = getAttribute(State, last_vertex),
-	[ CurrentVertex | [ NextVertex | _ ] ] = getAttribute( State , path ),
-	Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
+	% [ CurrentVertex | [ NextVertex | _ ] ] = getAttribute( State , path ),
+	[ CurrentVertex | _ ] = getAttribute( State , path ),
+	% Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
 
-	LinkData = lists:nth( 1, ets:lookup( list_streets , Edge ) ),
-	{_, _, _, StorageCapacity, _, NumberCars} = LinkData,
+	% LinkData = lists:nth( 1, ets:lookup( list_streets , Edge ) ),
+	% {_, _, _, _, _, _, _, Lanes, DigitalRailsInfo} = LinkData,
 
-	CurrentTick = class_Actor:get_current_tick_offset( State ),
+	% TODO: Wait digital rails platoon if needed
 	
-	CapacityFactor = getAttribute(State, capacity_factor),
-	case NumberCars >= CapacityFactor * StorageCapacity of		
-		true -> 
-			% io:format("edge-full: ~p|~p\n", [NumberCars, StorageCapacity]),
-			executeOneway( State , addSpontaneousTick , CurrentTick + 1 );
-		% _ -> io:format("edge-ok: ~p|~p\n", [NumberCars, StorageCapacity])
-		_ -> ok
-	end,
-
 	% Current vertex is an atom here, but at the ets it is a string. Must convert:
 	CurrentVertexStr = lists:flatten(io_lib:format("~s", [CurrentVertex])),
 	Matches = ets:lookup(traffic_signals, CurrentVertexStr),
@@ -195,7 +178,6 @@ get_next_vertex( State, [ CurrentVertex | _ ], _Mode) ->
 		0 -> move_to_next_vertex(State);
 		_ -> 	
 			{_, TrafficSignalsPid} = lists:nth(1, Matches),
-			% io:format("Traffic signal at vertex ~p has pid ~p.\n", [CurrentVertex, TrafficSignalsPid]),
 			class_Actor:send_actor_message(TrafficSignalsPid, {querySignalState, LastVertex}, State)
 	end.
 
@@ -203,9 +185,8 @@ move_to_next_vertex( State ) ->
 	[ CurrentVertex | [ NextVertex | Path ] ] = getAttribute( State , path ),
 	Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
 	
-	case getAttribute(State, traffic_model) of
-		% If traffic_model is car_following (i.e., we are not at Digital Rails), update counters
-		car_following -> 
+	case getAttribute(State, digital_rails_capable) of
+		false -> 
 			DecrementVertex = getAttribute( State , last_vertex_pid ),
 			case DecrementVertex of
 				ok -> ok;
@@ -215,15 +196,15 @@ move_to_next_vertex( State ) ->
 		_ -> ok
 	end,
 	
-	Data = lists:nth( 1, ets:lookup( list_streets , Edge ) ),
+	Data = lists:nth(1, ets:lookup(list_streets , Edge)),
 
-	{ Id , Time , Distance } = traffic_models:get_speed_car(Data, getAttribute(State, traffic_model), getAttribute(State, capacity_factor)),
+	{ Id , Time , Distance } = traffic_models:get_speed_car(Data, getAttribute(State, digital_rails_capable)),
 
 	TotalLength = getAttribute( State , distance ) + Distance,
 	StateAfterMovement = setAttributes( State , [
 		{distance , TotalLength} , {car_position , Id} , {last_vertex, CurrentVertex}, {last_vertex_pid , Edge} , {path , [NextVertex | Path]}] ), 
 
-	% io:format('~p Tick: ~p; ~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n', 
+	% io:format("~p Tick: ~p; ~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n", 
 	% 	[getAttribute( State , car_name ), class_Actor:get_current_tick_offset( State ), CurrentVertex, NextVertex, Distance, Time, Distance / Time, class_Actor:get_current_tick_offset( StateAfterMovement ) + Time]),
 
 	print_movement(State, StateAfterMovement),

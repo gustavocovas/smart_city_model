@@ -17,7 +17,7 @@ create_map_list([Element | MoreElements] , Graph ) ->
 	
 	Vertices = list_to_atom( lists:concat( [ V1 , V2 ] )),
 
-	NewElement = { Vertices , { list_to_atom( Id ) , Length , Capacity , Freespeed , 0, Lanes} },  % 0 is the number of cars in the link
+	NewElement = { Vertices , { list_to_atom( Id ) , Length , Capacity , Freespeed , 0, Lanes, {}} },  % 0 is the number of cars in the link
 
 	[ NewElement | create_map_list( MoreElements , Graph ) ].
 
@@ -73,12 +73,12 @@ calculate_bus_path( [ Stop | List ] , CityGraph  , Path ) ->
 			Path
 	end.	
 
-spaw_proccess( [] , _CityGraph ) -> ok;
-spaw_proccess( [ List | MoreLists ] , CityGraph ) ->
+spaw_proccess( [] , _CityGraph, _DigitalRails ) -> ok;
+spaw_proccess( [ List | MoreLists ] , CityGraph, DigitalRails ) ->
 	{ Name , ListTrips } = List,
 
-	spawn( create_agents, iterate_list , [ 1 , ListTrips , CityGraph , Name , self() ]),
-	spaw_proccess( MoreLists , CityGraph ).
+	spawn( create_agents, iterate_list , [ 1 , ListTrips , CityGraph , Name , self(), DigitalRails ]),
+	spaw_proccess( MoreLists , CityGraph, DigitalRails ).
 
 split_list( [] , _NumberLists , _ListSplit , ListReturn ) -> ListReturn;
 split_list( [ Name | Names ] , NumberLists , ListSplit , ListReturn ) ->
@@ -136,6 +136,7 @@ run() ->
 	ListBuses = bus_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(6, Config))), 
 	ParkSpots = park_parser:read_csv(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(7, Config))), 
 	TrafficSignals = traffic_signals_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(8, Config ))),
+	DigitalRails = digital_rails_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(9, Config ))),
 
 	ListEdges = create_street_list( CityGraph ),
 
@@ -151,6 +152,7 @@ run() ->
 	],
 
 	class_Actor:create_initial_actor( class_Street,  [ "Street" , ListEdges , LogName , Paths ] ),
+	class_Actor:create_initial_actor( class_DigitalRails,  [ DigitalRails ] ),
 	class_Actor:create_initial_actor( class_Metro, [ "MetroCity" , string:concat( OutputPath , MetroFile ) ] ), 
 
 	case element( 8 , Config ) of % verify if it is necessary to generate the city graph actor 
@@ -171,7 +173,7 @@ run() ->
 
 	List = split_list( Names , length ( Names ) , ListCars , []  ),   
 
-	spaw_proccess( List , CityGraph ),
+	spaw_proccess( List , CityGraph, DigitalRails ),
  
 	collectResults( Names ),
 

@@ -69,43 +69,43 @@ actSpontaneous( State ) ->
 init_cars( [] , State ) -> State;
 init_cars( [ Car | Cars ] , State ) ->
 
-	{ CarName , ListTripsFinal , Type, Park , Mode , Count, TrafficModel } = Car,	
+	{ CarName , ListTripsFinal , Type, Park , Mode , Count, DigitalRailsCapable } = Car,	
 
 	NewState = case Mode of
 		car ->
-			create_person_car( Count , State , CarName , ListTripsFinal , Type , Park , Mode, TrafficModel );
+			create_person_car( Count , State , CarName , ListTripsFinal , Type , Park , Mode, DigitalRailsCapable );
 		walk ->	
-			create_person_car( Count , State , CarName , ListTripsFinal , Type , Park , Mode, TrafficModel );
+			create_person_car( Count , State , CarName , ListTripsFinal , Type , Park , Mode, DigitalRailsCapable );
 		_ ->
-			create_person_public( Count , State , CarName , ListTripsFinal , Type , Mode, TrafficModel )
+			create_person_public( Count , State , CarName , ListTripsFinal , Type , Mode, DigitalRailsCapable )
 	end,
 	init_cars( Cars , NewState ).
 
 
-create_person_car( 0 , State , _CarName , _ListTripsFinal , _Type , _Park , _Mode, _TrafficModel ) -> State;
-create_person_car( Count , State , CarName , ListTripsFinal , Type , Park , Mode, TrafficModel ) ->
+create_person_car( 0 , State , _CarName , _ListTripsFinal , _Type , _Park , _Mode, _DigitalRailsCapable ) -> State;
+create_person_car( Count , State , CarName , ListTripsFinal , Type , Park , Mode, DigitalRailsCapable ) ->
 	CarFinalName = io_lib:format( "~s_~B", [ CarName , Count ] ),
 	% StartTime = class_RandomManager:get_uniform_value( 1200 ),
 	% TODO: Should be > 0. Why?
 	StartTime = 1,
 
 	NewState = class_Actor:create_actor( class_Car,
-		[ CarFinalName , ListTripsFinal , StartTime , Type , Park , Mode, TrafficModel ] , State ),
+		[ CarFinalName , ListTripsFinal , StartTime , Type , Park , Mode, DigitalRailsCapable ] , State ),
 
-	create_person_car( Count - 1 , NewState , CarName , ListTripsFinal , Type , Park , Mode, TrafficModel ).
+	create_person_car( Count - 1 , NewState , CarName , ListTripsFinal , Type , Park , Mode, DigitalRailsCapable ).
 
 
-create_person_public( _Count = 0 , State , _CarName , _ListTripsFinal , _Type , _Mode, _TrafficModel ) -> State;
-create_person_public( Count , State , CarName , ListTripsFinal , Type , Mode, TrafficModel ) ->
+create_person_public( _Count = 0 , State , _CarName , _ListTripsFinal , _Type , _Mode, _DigitalRailsCapable ) -> State;
+create_person_public( Count , State , CarName , ListTripsFinal , Type , Mode, DigitalRailsCapable ) ->
 	CarFinalName = io_lib:format( "~s_~B", [ CarName , Count ] ),
 	% StartTime = class_RandomManager:get_uniform_value( 1200 ),
 	% TODO: Should be > 0. Why?
 	StartTime = 1,
 
 	NewState = class_Actor:create_actor( class_Person,
-		[ CarFinalName , ListTripsFinal , StartTime , Type , Mode, TrafficModel ]  , State ),
+		[ CarFinalName , ListTripsFinal , StartTime , Type , Mode, DigitalRailsCapable ]  , State ),
 
-	create_person_public( Count - 1 , NewState , CarName , ListTripsFinal , Type , Mode, TrafficModel ).
+	create_person_public( Count - 1 , NewState , CarName , ListTripsFinal , Type , Mode, DigitalRailsCapable ).
 
 -spec onFirstDiasca( wooper:state(), pid() ) -> oneway_return().
 onFirstDiasca( State, _SendingActorPid ) ->

@@ -1,10 +1,15 @@
 -module(traffic_models).
 
--export([get_speed_car/3, get_speed_walk/2]).
+-export([get_speed_car/2, get_speed_walk/2]).
 
-get_speed_car(LinkData, car_following, CapacityFactor) ->
-	{_, Id, Length, RawCapacity, Freespeed, NumberCars} = LinkData,
-	Capacity = CapacityFactor * RawCapacity,
+% There is DR in link and car can use it:
+get_speed_car({_, Id, Length, _RawCapacity, Freespeed, _NumberCars, _Lanes, {_DigitalRailsLanes, _Cycle, _Signalized, _Offset}}, true) ->
+	Time = Length / Freespeed,
+	{Id, round(Time), round(Length)};
+
+% There is DR but car cannot use it:
+get_speed_car({_, Id, Length, RawCapacity, Freespeed, NumberCars, Lanes, {DigitalRailsLanes, _Cycle, _Signalized, _Offset}}, false) ->
+	Capacity = ((Lanes - DigitalRailsLanes) / Lanes) * RawCapacity,
 
 	MinimumDensity = Capacity * 0.3,
 	Speed = case NumberCars > MinimumDensity of
@@ -16,14 +21,24 @@ get_speed_car(LinkData, car_following, CapacityFactor) ->
 		false -> Freespeed
 	end,
 
-	% io:format("speed=~p n_cars=~p capacity=~p\n", [Speed, NumberCars, Capacity]),
 	Time = (Length / Speed) + 1,
 	{Id, round(Time), round(Length)};
 
-get_speed_car(LinkData, freespeed, _) ->
-	{_, Id, Length, _, Speed , _} = LinkData,	
+% There is no DR:
+get_speed_car({_, Id, Length, RawCapacity, Freespeed, NumberCars, _Lanes, {}}, _) ->
+	Capacity = RawCapacity,
 
-	Time = Length / Speed,
+	MinimumDensity = Capacity * 0.3,
+	Speed = case NumberCars > MinimumDensity of
+		true ->
+			case NumberCars >= Capacity of
+				true -> 1.0;
+				false -> Freespeed * math:pow(1 - (NumberCars / Capacity), 0.45)
+			end;
+		false -> Freespeed
+	end,
+
+	Time = (Length / Speed) + 1,
 	{Id, round(Time), round(Length)}.
 
 get_speed_walk(LinkData, _) ->

@@ -66,8 +66,8 @@ extract_node( Node , Multi ) ->
 					Type = children( Attributes , type ),
 					Mode = children( Attributes , mode ),
 					Park = children( Attributes , park ),
-					TrafficModel = children(Attributes, traffic_model),
-					[ { Origin , Destination , Count , StartTime , LinkOrigin , Type , Mode , NamePerson , Park, TrafficModel } ];
+					DigitalRailsCapable = children(Attributes, digital_rails_capable),
+					[ { Origin , Destination , Count , StartTime , LinkOrigin , Type , Mode , NamePerson , Park, DigitalRailsCapable } ];
 
 				true ->
 

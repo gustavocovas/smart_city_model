@@ -1,19 +1,19 @@
 -module(create_agents).
 
--export([iterate_list/5]).
+-export([iterate_list/6]).
 
-iterate_list( ListCount , Lista , Graph , Name , MainPID ) -> 
-	ListaFinal = verify_list( ListCount , Lista , Graph , Name , MainPID ),
+iterate_list( ListCount , Lista , Graph , Name , MainPID, DigitalRails ) -> 
+	ListaFinal = verify_list( ListCount , Lista , Graph , Name , MainPID, DigitalRails ),
 	class_Actor:create_initial_actor( class_CarManager, [ Name , ListaFinal ] ),
 	MainPID ! { Name }.
 
-verify_list( _ListCount , [ ] , _Graph , _Name , _MainPID ) -> [];
-verify_list( ListCount , [ Car | MoreCars] , Graph , Name , MainPID ) ->
+verify_list( _ListCount , [ ] , _Graph , _Name , _MainPID, _DigitalRails ) -> [];
+verify_list( ListCount , [ Car | MoreCars] , Graph , Name , MainPID, DigitalRails ) ->
 
-	Element = create_person( Car , Graph ),
-	[ Element | verify_list( ListCount + 1 , MoreCars , Graph , Name , MainPID ) ].
+	Element = create_person( Car , Graph, DigitalRails ),
+	[ Element | verify_list( ListCount + 1 , MoreCars , Graph , Name , MainPID, DigitalRails ) ].
 
-create_person( Car , Graph ) ->
+create_person( Car , Graph, DigitalRails ) ->
 	{ Origin , Destination , CarCount , ST , LinkOrigin , Type , Mode , NameFile , Park, TrafficModel } = Car,
         { STInteger , _ } = string:to_integer( ST ),
 
@@ -26,8 +26,9 @@ create_person( Car , Graph ) ->
 			list_to_atom( Mode ) % Otherwise, car or walk.
 	end,
 
+	DrEdges = create_dr_edge_list(DigitalRails),
 	NewPath = case Destination of 
-		"random_walk" -> digital_rails_random_walk(Graph, list_to_atom(Origin), false, [], 5);
+		"random_walk" -> digital_rails_random_walk(Graph, list_to_atom(Origin), false, [], 5, DrEdges);
 		_ -> digraph:get_short_path( Graph , list_to_atom(Origin) , list_to_atom(Destination) )
 	end,
 
@@ -39,15 +40,15 @@ create_person( Car , Graph ) ->
 
 random_element(List) -> lists:nth(rand:uniform(length(List)), List).
 
-digital_rails_random_walk(_Graph, Origin, _UsedDigitalRails, _RestrictedLinks, 0) ->
+digital_rails_random_walk(_Graph, Origin, _UsedDigitalRails, _RestrictedLinks, 0, _) ->
 	[Origin];
 
-digital_rails_random_walk(Graph, Origin, UsedDigitalRails, RestrictedLinks, RemainingLinks) ->
+digital_rails_random_walk(Graph, Origin, UsedDigitalRails, RestrictedLinks, RemainingLinks, DrEdges) ->
 	AllOutboundEdges = lists:map(fun(E) -> digraph:edge(Graph, E) end, digraph:out_edges(Graph, Origin)),
 	AllowedOutboundEdges = lists:filter(fun (E) -> not lists:member(element(1, element(4, E)), RestrictedLinks) end, AllOutboundEdges),
 
-	DigitalRailsOutboundEdges = lists:filter(fun (E) -> is_edge_digital_rail(E) end, AllowedOutboundEdges),
-	RegularOutboundEdges = lists:filter(fun (E) -> not is_edge_digital_rail(E) end, AllowedOutboundEdges),
+	DigitalRailsOutboundEdges = lists:filter(fun (E) -> is_edge_digital_rail(E, DrEdges) end, AllowedOutboundEdges),
+	RegularOutboundEdges = lists:filter(fun (E) -> not is_edge_digital_rail(E, DrEdges) end, AllowedOutboundEdges),
 
 	case length(DigitalRailsOutboundEdges) == 0 of
 		true -> 
@@ -58,20 +59,20 @@ digital_rails_random_walk(Graph, Origin, UsedDigitalRails, RestrictedLinks, Rema
 					[Origin, Destination];
 				false ->
 					% io:format("No outbound Digital rails and have not used DR (~p) ~n", [RegularOutboundEdges]),
-					[Origin] ++ digital_rails_random_walk(Graph, Destination, false, RestrictedNextLinks, RemainingLinks - 1)
+					[Origin] ++ digital_rails_random_walk(Graph, Destination, false, RestrictedNextLinks, RemainingLinks - 1, DrEdges)
 				end;
 		false -> 
 			case length(RegularOutboundEdges) == 0 of
 				true -> 
 					% io:format("No choice but to stay in digital rails (~p) ~n", DigitalRailsOutboundEdges),
 					{_, _, Destination, {_, _, _, _, _, RestrictedNextLinks}} = lists:nth(1, DigitalRailsOutboundEdges),
-					[Origin] ++ digital_rails_random_walk(Graph, Destination, true, RestrictedNextLinks, RemainingLinks);
+					[Origin] ++ digital_rails_random_walk(Graph, Destination, true, RestrictedNextLinks, RemainingLinks, DrEdges);
 				false -> 
 					case rand:uniform() < 0.75 of
 						true -> 
 							% io:format("Remaining in digital rails (~p) ~n", DigitalRailsOutboundEdges),
 							{_, _, Destination, {_, _, _, _, _, RestrictedNextLinks}} = lists:nth(1, DigitalRailsOutboundEdges),
-							[Origin] ++ digital_rails_random_walk(Graph, Destination, true, RestrictedNextLinks, RemainingLinks);
+							[Origin] ++ digital_rails_random_walk(Graph, Destination, true, RestrictedNextLinks, RemainingLinks, DrEdges);
 						false -> 
 							% io:format("Leaving digital rails and ending trip (~p) ~n", [RegularOutboundEdges]),
 							{_, _, Destination, _} = random_element(RegularOutboundEdges),
@@ -79,57 +80,24 @@ digital_rails_random_walk(Graph, Origin, UsedDigitalRails, RestrictedLinks, Rema
 					end
 			end
 	end.
+
+create_dr_edge_list([]) -> [];
+
+create_dr_edge_list([{rail, [{cycle, _}], [{links, Links}]} | Rails]) ->
+	filter_dr_links(Links) ++ create_dr_edge_list(Rails);
 	
-is_edge_digital_rail(Edge) ->
-	{_, Origin, Destination, _} = Edge,
-	OD = {Origin, Destination},
-	case OD of 
-		% Paraíso DR:
-		{'1952545091', '5381067434'} -> true; 
-		{'5381067434', '2098758071'} -> true; 
-		{'2098758071', '4124282297'} -> true; 
-		{'4124282297', '1953466364'} -> true;
-		{'1953466364', '165466550'} -> true;
-		{'165466550' , '1953466363'} -> true;
-		{'1953466363', '60609673'} -> true; 
-		{'60609673', '953466367'} -> true;
-		{'1953466367', '1953466354'} -> true;
-		{'1953466354', '2869020072'} -> true;
-		{'2869020072', '60609692'} -> true; 
-		{'60609692', '990911135'} -> true; 
-		{'1990911135', '1953466370'} -> true;
-		{'1953466370', '1990934598'} -> true;
-		{'1990934598', '1953466361'} -> true;
-		{'1953466361', '856727276'} -> true; 
-		{'856727276' , '1953466358'} -> true;
-		{'1953466358', '1953466373'} -> true;
-		{'1953466373', '303863453'} -> true;
-		{'303863453', '60609866'} -> true;
-		{'60609866', '60609874'} -> true;
+create_dr_edge_list([_ | Rails]) ->
+	create_dr_edge_list(Rails).
 
-		% Consolação DR:
-		{'60609819', '60609822'} -> true;
-		{'60609822', '303863647'} -> true;
-		{'303863647', '1953466378'} -> true;
-		{'1953466378', '1953466359'} -> true;
-		{'1953466359', '1990934597'} -> true;
-		{'1990934597', '1953466360'} -> true;
-		{'1953466360', '1990911134'} -> true;
-		{'1990911134', '2021000708'} -> true;
-		{'2021000708', '2352453476'} -> true;
-		{'2352453476', '60609697'} -> true;
-		{'60609697', '165463204'} -> true;
-		{'165463204', '1953466375'} -> true;
-		{'1953466375', '1953466365'} -> true;
-		{'1953466365', '165459105'} -> true;
-		{'165459105', '1953466357'} -> true;
-		{'1953466357', '1819616337'} -> true;
-		{'1819616337', '1953466362'} -> true;
-		{'1953466362', '4236712736'} -> true;
-		{'4236712736', '60609643'} -> true;
-		{'60609643', '5381067437'} -> true;
-		{'5381067437', '4236712716'} -> true;
-		{'4236712716', '1421376041'} -> true;
+filter_dr_links([]) -> [];
+filter_dr_links([{link, [{origin, Origin}, {destination, Destination}], _} | Links]) ->
+	[{Origin, Destination}] ++  filter_dr_links(Links);
 
-		_ -> false
-	end.
+filter_dr_links([{link, [{origin, Origin}, {destination, Destination}, {signalized, _}, {offset, _}], _} | Links]) ->
+	[{Origin, Destination}] ++  filter_dr_links(Links);
+
+filter_dr_links([_ | Links]) ->
+	filter_dr_links(Links).
+
+is_edge_digital_rail({_, Origin, Destination, _}, DrEdges) ->
+	lists:member({Origin, Destination}, DrEdges).
