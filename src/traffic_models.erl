@@ -7,6 +7,10 @@ get_speed_car({_, Id, Length, _RawCapacity, Freespeed, _NumberCars, _Lanes, {_Di
 	Time = Length / Freespeed,
 	{Id, round(Time), round(Length)};
 
+% There is DR but not effective:
+get_speed_car({Whatever, Id, Length, RawCapacity, Freespeed, NumberCars, Lanes, {_DigitalRailsLanes, _Cycle, _Signalized, _Offset}}, noeffect) ->
+	get_speed_car({Whatever, Id, Length, RawCapacity, Freespeed, NumberCars, Lanes, {}}, noeffect);
+
 % There is DR but car cannot use it:
 get_speed_car({_, Id, Length, RawCapacity, Freespeed, NumberCars, Lanes, {DigitalRailsLanes, _Cycle, _Signalized, _Offset}}, false) ->
 	Capacity = ((Lanes - DigitalRailsLanes) / Lanes) * RawCapacity,

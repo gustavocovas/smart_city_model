@@ -68,7 +68,12 @@ digital_rails_random_walk(Graph, Origin, UsedDigitalRails, RestrictedLinks, Rema
 					{_, _, Destination, {_, _, _, _, _, RestrictedNextLinks}} = lists:nth(1, DigitalRailsOutboundEdges),
 					[Origin] ++ digital_rails_random_walk(Graph, Destination, true, RestrictedNextLinks, RemainingLinks, DrEdges);
 				false -> 
-					case rand:uniform() < 0.75 of
+					StayStraightProbability = case UsedDigitalRails of
+						true -> 0.9;
+						false -> 0.70
+					end,
+
+					case rand:uniform() < StayStraightProbability of
 						true -> 
 							% io:format("Remaining in digital rails (~p) ~n", DigitalRailsOutboundEdges),
 							{_, _, Destination, {_, _, _, _, _, RestrictedNextLinks}} = lists:nth(1, DigitalRailsOutboundEdges),
@@ -100,4 +105,4 @@ filter_dr_links([_ | Links]) ->
 	filter_dr_links(Links).
 
 is_edge_digital_rail({_, Origin, Destination, _}, DrEdges) ->
-	lists:member({Origin, Destination}, DrEdges).
+	lists:member({atom_to_list(Origin), atom_to_list(Destination)}, DrEdges).

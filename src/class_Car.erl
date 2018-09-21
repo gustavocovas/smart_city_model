@@ -186,14 +186,14 @@ move_to_next_vertex( State ) ->
 	Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
 	
 	case getAttribute(State, digital_rails_capable) of
-		false -> 
+		true -> ok;
+		_ -> 
 			DecrementVertex = getAttribute( State , last_vertex_pid ),
 			case DecrementVertex of
 				ok -> ok;
 				_ -> ets:update_counter( list_streets, DecrementVertex , { 6 , -1 })
 			end,	
-			ets:update_counter( list_streets , Edge , { 6 , 1 });
-		_ -> ok
+			ets:update_counter( list_streets , Edge , { 6 , 1 })
 	end,
 	
 	Data = lists:nth(1, ets:lookup(list_streets , Edge)),
