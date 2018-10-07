@@ -260,6 +260,9 @@ print_movement( PreviousState, NextState ) ->
 			print:write_movement_car_message( CarId, LastPosition, Type, CurrentTickOffset, NewPosition, xml );
 		true -> 
 			CurrentTrip = lists:nth( 1 , getAttribute( PreviousState , trips ) ),
-			LinkOrigin = element( 3 , CurrentTrip ), 
+			TripVertices = element(2, CurrentTrip),
+			EdgeId = list_to_atom(lists:concat([lists:nth(1, TripVertices), lists:nth(2, TripVertices)])),
+			Edge = lists:nth(1, ets:lookup(list_streets , EdgeId)),
+			LinkOrigin = element(2, Edge),
 			print:write_initial_message( CarId, Type, CurrentTickOffset, LinkOrigin, NewPosition, xml )
 	end.
