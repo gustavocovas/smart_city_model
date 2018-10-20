@@ -32,13 +32,13 @@ construct( State, ?wooper_construct_parameters ) ->
 	{CycleDuration, _} = string:to_integer(CycleDurationStr),
 	{Offset, _} = string:to_integer(OffsetStr),
 
+	case ets:info(traffic_signals) of
+		undefined -> ets:new(traffic_signals, [public, set, named_table]);
+		_ -> ok
+	end,
+
 	lists:foreach(fun(Node) -> 
 		{node, [{id, NodeId}], _} = Node,
-		case ets:info(traffic_signals) of
-			undefined -> ets:new(traffic_signals, [public, set, named_table]);
-   	 	_ -> ok
-		end,
-
 		ets:insert( traffic_signals , {NodeId, self()} )
 	end, Nodes),
 
