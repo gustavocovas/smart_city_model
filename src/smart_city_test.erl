@@ -128,17 +128,41 @@ run() ->
 
 	ConfigPath = readConfigPath(),
 
+	?test_info("-> Reading config\n"),
 	Config = config_parser:show( ConfigPath ),
+	?test_info("-> Done\n"),
 
+	?test_info("-> Reading trips\n"),
 	ListCars = trip_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(4, Config))),
-	CityGraph = map_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(3, Config)), false),
-	MetroFile = filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(5, Config)), 
-	ListBuses = bus_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(6, Config))), 
-	ParkSpots = park_parser:read_csv(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(7, Config))), 
-	TrafficSignals = traffic_signals_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(8, Config ))),
-	DigitalRails = digital_rails_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(9, Config ))),
+	?test_info("-> Done\n"),
 
+	?test_info("-> Reading city graph\n"),
+	CityGraph = map_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(3, Config)), false),
+	?test_info("-> Done\n"),
+
+	?test_info("-> Reading metro\n"),
+	MetroFile = filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(5, Config)), 
+	?test_info("-> Done\n"),
+
+	?test_info("-> Reading buses\n"),
+	ListBuses = bus_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(6, Config))), 
+	?test_info("-> Done\n"),
+
+	?test_info("-> Reading parking spots\n"),
+	ParkSpots = park_parser:read_csv(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(7, Config))), 
+	?test_info("-> Done\n"),
+
+	?test_info("-> Reading traffic signals\n"),
+	TrafficSignals = traffic_signals_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(8, Config ))),
+	?test_info("-> Done\n"),
+
+	?test_info("-> Reading digital rails\n"),
+	DigitalRails = digital_rails_parser:show(filename:join(os:getenv("INTERSCSIMULATOR_PATH"), element(9, Config ))),
+	?test_info("-> Done\n"),
+
+	?test_info("-> Creating street list\n"),
 	ListEdges = create_street_list( CityGraph ),
+	?test_info("-> Done\n"),
 
 	{ _ , Pwd } = file:get_cwd(),
 	OutputPath = string:concat( Pwd, "/" ),
@@ -151,12 +175,21 @@ run() ->
 		string:concat( AmqpClientPath, "/include/rabbit_common/ebin" )
 	],
 
+	?test_info("-> Creating initial actor for Streets\n"),
 	class_Actor:create_initial_actor( class_Street,  [ "Street" , ListEdges , LogName , Paths ] ),
+	?test_info("-> Done\n"),
+
+	?test_info("-> Creating initial actor for Digital Rails\n"),
 	class_Actor:create_initial_actor( class_DigitalRails,  [ DigitalRails ] ),
+	?test_info("-> Done\n"),
+
+	?test_info("-> Creating initial actor for metro\n"),
 	class_Actor:create_initial_actor( class_Metro, [ "MetroCity" , string:concat( OutputPath , MetroFile ) ] ), 
+	?test_info("-> Done\n"),
 
 	case element( 8 , Config ) of % verify if it is necessary to generate the city graph actor 
 		"true" ->
+			?test_info("-> Creating initial actor for City\n"),
 			class_Actor:create_initial_actor( class_City, [ "City" , { string:concat( OutputPath, element( 3 , Config ) ) } ] );
 		_ ->
 			ok
@@ -173,12 +206,17 @@ run() ->
 
 	List = split_list( Names , length ( Names ) , ListCars , []  ),   
 
+	?test_info("-> Spawning car managers\n"),
 	spaw_proccess( List , CityGraph, DigitalRails ),
- 
+ 	?test_info("-> Done\n"),
+
 	collectResults( Names ),
 
 	create_buses( ListBuses , CityGraph  ),
+
+	?test_info("-> Creating traffic signals\n"),
 	create_traffic_signals(TrafficSignals),
+	?test_info("-> Done\n"),
 
 	SimulationDuration = element( 1 , string:to_integer(element( 2 , Config ) ) ),
 
@@ -188,6 +226,7 @@ run() ->
 	% ?test_info_fmt( "Starting simulation, for a stop after a duration "
 	% 				"in virtual time of ~Bms.", [ SimulationDuration ] ),
 
+	?test_info("Starting simulation (lol)"),
 	RootTimeManagerPid ! { startFor, [ SimulationDuration, self() ] },
 
 	% ?test_info( "Waiting for the simulation to end, "
