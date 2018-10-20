@@ -14,35 +14,27 @@ get_speed_car({Whatever, Id, Length, RawCapacity, Freespeed, NumberCars, Lanes, 
 % There is DR but car cannot use it:
 get_speed_car({_, Id, Length, RawCapacity, Freespeed, NumberCars, Lanes, {DigitalRailsLanes, _Cycle, _Signalized, _Offset}}, false) ->
 	Capacity = ((Lanes - DigitalRailsLanes) / Lanes) * RawCapacity,
-
-	MinimumDensity = Capacity * 0.3,
-	Speed = case NumberCars > MinimumDensity of
-		true ->
-			case NumberCars >= Capacity of
-				true -> 1.0;
-				false -> Freespeed * math:pow(1 - (NumberCars / Capacity), 0.45)
-			end;
-		false -> Freespeed
-	end,
-
-	Time = (Length / Speed) + 1,
-	{Id, round(Time), round(Length)};
+	link_density_speed(Id, Length, Capacity, NumberCars, Freespeed);
 
 % There is no DR:
 get_speed_car({_, Id, Length, RawCapacity, Freespeed, NumberCars, _Lanes, {}}, _) ->
-	Capacity = RawCapacity,
+	link_density_speed(Id, Length, RawCapacity, NumberCars, Freespeed).
 
+link_density_speed(Id, Length, Capacity, NumberCars, Freespeed) ->
+	Alpha = 1,
+	Beta = 1,
 	MinimumDensity = Capacity * 0.3,
 	Speed = case NumberCars > MinimumDensity of
 		true ->
 			case NumberCars >= Capacity of
 				true -> 1.0;
-				false -> Freespeed * math:pow(1 - (NumberCars / Capacity), 0.45)
+				false -> Freespeed * math:pow(1 - math:pow((NumberCars / Capacity), Beta), Alpha)
 			end;
 		false -> Freespeed
 	end,
 
-	Time = (Length / Speed) + 1,
+	TrafficSignalPenalty = 0,
+	Time = (1 + TrafficSignalPenalty) * (Length / Speed) + 1,
 	{Id, round(Time), round(Length)}.
 
 get_speed_walk(LinkData, _) ->
