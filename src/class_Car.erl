@@ -46,6 +46,7 @@ construct( State, ?wooper_construct_parameters ) ->
 		{ mode , Mode },
 		{ last_vertex , ok },
 		{ last_vertex_pid , ok },
+		{ previous_dr_name, nil },
 		{ digital_rails_capable, DigitalRailsCapable}] 
 	),
 
@@ -145,6 +146,17 @@ verify_park( State , _Mode ) ->
 			class_Actor:send_actor_message( Parking, { spot_available, { Park } } , State )
 	end.
 
+is_changing_dr(State, {Name, _DRLanes, _Cycle, _Bandwidth, _, _}) ->
+	case getAttribute(State, digital_rails_capable) of 
+		true -> 
+			case getAttribute(State, previous_dr_name) of
+				Name -> false;
+				_ -> true
+			end;
+		_ -> false
+	end;
+
+is_changing_dr(_, _) -> false.
 
 get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->			
 	Vertices = list_to_atom( lists:concat( [ Current , lists:nth( 1 , Path ) ] )),
@@ -155,31 +167,43 @@ get_next_vertex( State , [ Current | Path ] , Mode ) when Mode == walk ->
 	TotalLength = getAttribute( State , distance ) + Distance,
 	FinalState = setAttributes( State , [ { distance , TotalLength } , { car_position , Id } , { path , Path } ] ), 
 
-	%	print_movement( State ),
+	% print_movement( State ),
 
 	executeOneway( FinalState , addSpontaneousTick , class_Actor:get_current_tick_offset( FinalState ) + Time );
 
-get_next_vertex( State, [ CurrentVertex | _ ], _Mode) -> 
-	LastVertex = getAttribute(State, last_vertex),
-	% [ CurrentVertex | [ NextVertex | _ ] ] = getAttribute( State , path ),
-	[ CurrentVertex | _ ] = getAttribute( State , path ),
-	% Edge = list_to_atom(lists:concat([ CurrentVertex , NextVertex ])),
+get_next_vertex( State, [ _CurrentVertex | _ ], _Mode) -> 
+	% LastVertex = getAttribute(State, last_vertex),
+	[CurrentVertex | [ NextVertex | _ ]] = getAttribute(State, path),
+	% [ CurrentVertex | _ ] = getAttribute( State , path ),
+	Edge = list_to_atom(lists:concat([CurrentVertex, NextVertex])),
 
-	% LinkData = lists:nth( 1, ets:lookup( list_streets , Edge ) ),
-	% {_, _, _, _, _, _, _, Lanes, DigitalRailsInfo} = LinkData,
+	LinkData = lists:nth(1, ets:lookup(list_streets, Edge)),
+	{_, _, _, _, _, _, _Lanes, DigitalRailsInfo} = LinkData,
 
-	% TODO: Wait digital rails platoon if needed
+	ChangingDR = is_changing_dr(State, DigitalRailsInfo),
+	case ChangingDR of 
+		true ->
+			{Name, _DRLanes, Cycle, Bandwidth, _, _} = DigitalRailsInfo,
+			T = round(rand:uniform() * Cycle),
+			StateAfter = setAttributes(State, [{previous_dr_name, Name}]),
+		 	case T > Bandwidth of
+				true -> executeOneway(StateAfter, addSpontaneousTick, class_Actor:get_current_tick_offset(StateAfter) + T);
+				_ -> move_to_next_vertex(StateAfter)
+			end;
+		false -> move_to_next_vertex(State)
+	end.
 	
 	% Current vertex is an atom here, but at the ets it is a string. Must convert:
-	CurrentVertexStr = lists:flatten(io_lib:format("~s", [CurrentVertex])),
-	Matches = ets:lookup(traffic_signals, CurrentVertexStr),
+	% CurrentVertexStr = lists:flatten(io_lib:format("~s", [CurrentVertex])),
+	% Matches = ets:lookup(traffic_signals, CurrentVertexStr),
 
-	case length(Matches) of
-		0 -> move_to_next_vertex(State);
-		_ -> 	
-			{_, TrafficSignalsPid} = lists:nth(1, Matches),
-			class_Actor:send_actor_message(TrafficSignalsPid, {querySignalState, LastVertex}, State)
-	end.
+	% case length(Matches) of
+	% 	0 -> move_to_next_vertex(State);
+	% 	_ -> 	
+	% 		{_, TrafficSignalsPid} = lists:nth(1, Matches),
+	% 		class_Actor:send_actor_message(TrafficSignalsPid, {querySignalState, LastVertex}, State)
+	% end.
+	% move_to_next_vertex(State).
 
 move_to_next_vertex( State ) ->
 	[ CurrentVertex | [ NextVertex | Path ] ] = getAttribute( State , path ),
@@ -204,10 +228,11 @@ move_to_next_vertex( State ) ->
 	StateAfterMovement = setAttributes( State , [
 		{distance , TotalLength} , {car_position , Id} , {last_vertex, CurrentVertex}, {last_vertex_pid , Edge} , {path , [NextVertex | Path]}] ), 
 
+	% io:format("t=~p: ~p; ~p->~p ~n", [class_Actor:get_current_tick_offset(State), getAttribute(State, car_name), CurrentVertex, NextVertex]),
 	% io:format("~p Tick: ~p; ~p => ~p, Dist: ~p, Time: ~p, Avg. Speed: ~p, NextTick: ~p\n", 
 	% 	[getAttribute( State , car_name ), class_Actor:get_current_tick_offset( State ), CurrentVertex, NextVertex, Distance, Time, Distance / Time, class_Actor:get_current_tick_offset( StateAfterMovement ) + Time]),
 
-	print_movement(State, StateAfterMovement),
+	% print_movement(State, StateAfterMovement),
 	executeOneway( StateAfterMovement , addSpontaneousTick , class_Actor:get_current_tick_offset( StateAfterMovement ) + Time ).
 
 -spec receive_signal_state(wooper:state(), tuple(), pid()) -> oneway_return().
@@ -248,21 +273,21 @@ onFirstDiasca( State, _SendingActorPid ) ->
 	NewState = setAttribute( State , start_time , FirstActionTime ),
 	executeOneway( NewState , addSpontaneousTick , FirstActionTime ).
 
-print_movement( PreviousState, NextState ) ->
-	CarId = getAttribute( PreviousState, car_name),
-	LastPosition = getAttribute( PreviousState , car_position ),
-	Type = getAttribute( PreviousState , type ),
-	CurrentTickOffset = class_Actor:get_current_tick_offset( NextState ),
-	NewPosition = getAttribute( NextState, car_position),
+% print_movement( PreviousState, NextState ) ->
+% 	CarId = getAttribute( PreviousState, car_name),
+% 	LastPosition = getAttribute( PreviousState , car_position ),
+% 	Type = getAttribute( PreviousState , type ),
+% 	CurrentTickOffset = class_Actor:get_current_tick_offset( NextState ),
+% 	NewPosition = getAttribute( NextState, car_position),
 
-	case LastPosition == -1 of
-		false ->
-			print:write_movement_car_message( CarId, LastPosition, Type, CurrentTickOffset, NewPosition, xml );
-		true -> 
-			CurrentTrip = lists:nth( 1 , getAttribute( PreviousState , trips ) ),
-			TripVertices = element(2, CurrentTrip),
-			EdgeId = list_to_atom(lists:concat([lists:nth(1, TripVertices), lists:nth(2, TripVertices)])),
-			Edge = lists:nth(1, ets:lookup(list_streets , EdgeId)),
-			LinkOrigin = element(2, Edge),
-			print:write_initial_message( CarId, Type, CurrentTickOffset, LinkOrigin, NewPosition, xml )
-	end.
+% 	case LastPosition == -1 of
+% 		false ->
+% 			print:write_movement_car_message( CarId, LastPosition, Type, CurrentTickOffset, NewPosition, xml );
+% 		true -> 
+% 			CurrentTrip = lists:nth( 1 , getAttribute( PreviousState , trips ) ),
+% 			TripVertices = element(2, CurrentTrip),
+% 			EdgeId = list_to_atom(lists:concat([lists:nth(1, TripVertices), lists:nth(2, TripVertices)])),
+% 			Edge = lists:nth(1, ets:lookup(list_streets , EdgeId)),
+% 			LinkOrigin = element(2, Edge),
+% 			print:write_initial_message( CarId, Type, CurrentTickOffset, LinkOrigin, NewPosition, xml )
+% 	end.

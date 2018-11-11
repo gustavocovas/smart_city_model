@@ -33,26 +33,26 @@ construct( State, ?wooper_construct_parameters ) ->
 
 create_digital_rails([]) -> ok;
 
-create_digital_rails([{rail, [{cycle, CycleStr}], [{links, Links}]} | Rails]) ->
-	create_digital_rails_links(list_to_integer(CycleStr), Links),
+create_digital_rails([{rail, [{name, Name}, {cycle, CycleStr}, {bandwidth, BandwidthStr}], [{links, Links}]} | Rails]) ->
+	create_digital_rails_links(Name, list_to_integer(CycleStr), list_to_integer(BandwidthStr), Links),
 	create_digital_rails(Rails);
 
 create_digital_rails([_ | Rails]) ->
 	create_digital_rails(Rails).
 
-create_digital_rails_links(_, []) -> ok;
-create_digital_rails_links(Cycle, [{link, [{origin, Origin}, {destination, Destination}], _} | Links]) ->
+create_digital_rails_links(_, _, _, []) -> ok;
+create_digital_rails_links(Name, Cycle, Bandwidth, [{link, [{origin, Origin}, {destination, Destination}], _} | Links]) ->
 	Edge = list_to_atom(lists:concat([Origin, Destination])),
-	ets:update_element(list_streets, Edge, {8 , {1, Cycle, false, 0}}),
-	create_digital_rails_links(Cycle, Links);
+	ets:update_element(list_streets, Edge, {8 , {Name, 1, Cycle, Bandwidth, false, 0}}),
+	create_digital_rails_links(Name, Cycle, Bandwidth, Links);
 
-create_digital_rails_links(Cycle, [{link, [{origin, Origin}, {destination, Destination}, {signalized, Signalized}, {offset, Offset}], _} | Links]) ->
+create_digital_rails_links(Name, Cycle, Bandwidth, [{link, [{origin, Origin}, {destination, Destination}, {signalized, Signalized}, {offset, Offset}], _} | Links]) ->
 	Edge = list_to_atom(lists:concat([Origin, Destination])),
-	ets:update_element(list_streets, Edge, {8 , {1, Cycle, Signalized, Offset}}),
-	create_digital_rails_links(Cycle, Links);
+	ets:update_element(list_streets, Edge, {8 , {Name, 1, Cycle, Bandwidth, Signalized, Offset}}),
+	create_digital_rails_links(Name, Cycle, Bandwidth, Links);
 
-create_digital_rails_links(Cycle, [_ | Links]) ->
-	create_digital_rails_links(Cycle, Links).
+create_digital_rails_links(Name, Cycle, Bandwidth, [_ | Links]) ->
+	create_digital_rails_links(Name, Cycle, Bandwidth, Links).
 
 -spec destruct( wooper:state() ) -> wooper:state().
 destruct( State ) -> State.

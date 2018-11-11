@@ -32,7 +32,7 @@ create_person( Car , Graph, DigitalRails ) ->
 		_ -> digraph:get_short_path( Graph , list_to_atom(Origin) , list_to_atom(Destination) )
 	end,
 
-	io:format("Path: ~p ~n", [NewPath]),
+	% io:format("Path: ~p ~n", [NewPath]),
 
 	ListTripsFinal = [ { ModeFinal , NewPath , LinkOrigin } ],
 
